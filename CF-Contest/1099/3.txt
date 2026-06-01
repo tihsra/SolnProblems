@@ -1,0 +1,5 @@
+// calculate min
+// for each element from this min add the possible values that it could provide
+// add this in max treeset 
+// for the min element check which is the largest element that is present in every other treeset
+// Tc ~ O(NlogN)
