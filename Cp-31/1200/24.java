@@ -5,16 +5,18 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 			int n = scn.nextInt();
-			int k = scn.nextInt();
-			ps(solve(n,k));
+			String str = scn.next();
+			ps(solve(str,n));
 		}
 	}
-	static long solve(int n, int k){
-		long ans = 1;
-		for(int i=1;i<=k;i++){
-			ans = (ans%MOD * n%MOD)%MOD;
+	static String solve(String str, int n){
+		int zero = 0;
+		for(int i=0;i<n;i++){
+			if(str.charAt(i)=='0') zero++;
 		}
-		return ans;
+		
+		if(zero==1||zero%2==0) return "BOB";
+		return "ALICE";
 	}
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;

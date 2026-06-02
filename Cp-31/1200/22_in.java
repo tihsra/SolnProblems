@@ -2,19 +2,36 @@ import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
-		int t = scn.nextInt();
+		int t = 1;
 		while(t-->0){
 			int n = scn.nextInt();
-			int k = scn.nextInt();
-			ps(solve(n,k));
+			long k = scn.nextLong();
+			long x = scn.nextLong();
+			
+			long arr[] = new long[n];
+			lnarr(arr,scn);
+			
+			Arrays.sort(arr);
+			
+			long dif[] = new long[n-1];
+			
+			for(int i=0;i<n-1;i++) {dif[i] = arr[i+1]-arr[i];}
+			
+			int ans = 1;
+			
+			for(int i=0;i<n-1;i++){
+				if((dif[i]<=(2*x)&&dif[i]>x)&&k>0) {
+					k--;
+					//ps("did k-- for"+i);
+					}
+				else if(dif[i]>(2*x)||(dif[i]>x&&k<=0)){
+					ans++;
+					//ps("did ans++ for"+i);
+				}
+			}
+			
+			ps(ans);
 		}
-	}
-	static long solve(int n, int k){
-		long ans = 1;
-		for(int i=1;i<=k;i++){
-			ans = (ans%MOD * n%MOD)%MOD;
-		}
-		return ans;
 	}
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;

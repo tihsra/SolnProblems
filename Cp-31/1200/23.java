@@ -5,16 +5,29 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 			int n = scn.nextInt();
-			int k = scn.nextInt();
-			ps(solve(n,k));
+			String str = scn.next();
+			ps(solve(str));
 		}
 	}
-	static long solve(int n, int k){
-		long ans = 1;
-		for(int i=1;i<=k;i++){
-			ans = (ans%MOD * n%MOD)%MOD;
+	static String solve(String str){
+		for(char a='a';a<='z';a++){
+				if(!str.contains(a+"")) return a+"";
 		}
-		return ans;
+		
+		for(char a='a';a<='z';a++){
+			for(char b='a';b<='z';b++){
+				if(!str.contains(a+""+b)) return a+""+b;
+			}
+		}
+		
+		for(char a='a';a<='z';a++){
+			for(char b='a';b<='z';b++){
+				for(char c='a';c<='z';c++){
+					if(!str.contains(a+""+b+""+c)) return a+""+b+""+c;
+				}
+			}
+		}
+		return "";
 	}
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;

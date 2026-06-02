@@ -5,16 +5,91 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 			int n = scn.nextInt();
-			int k = scn.nextInt();
-			ps(solve(n,k));
+			scn.nextLine();
+			String str = scn.next();
+
+			int sp = 0;
+			int ep = n-1;
+			
+			boolean flag = true;
+			
+			while(sp<ep){
+				if(str.charAt(sp)!=str.charAt(ep)){
+					flag = false;
+					break;
+				}
+				sp++;
+				ep--;
+			}
+			
+			if(flag){
+				ps(0);
+				continue;
+			}
+			
+			String toBeEvaluated = str.substring(sp,ep+1);
+			
+			char fir = str.charAt(sp);
+			char sec = str.charAt(ep);
+			
+			int ans = IMAX;
+			int cur = 1;
+			
+			sp=1; ep=toBeEvaluated.length()-1;
+			flag = true;
+			
+			while(sp<ep){
+				if(toBeEvaluated.charAt(sp)!=toBeEvaluated.charAt(ep)){
+					if(toBeEvaluated.charAt(sp)==fir){
+						sp++;
+						cur++;
+					}
+					else if(toBeEvaluated.charAt(ep)==fir){
+						ep--;
+						cur++;
+					}
+					else{
+						flag = false;
+						break;
+					}
+				}
+				else{
+					sp++;
+					ep--;
+				}
+			}
+			
+			if(flag) ans = Math.min(ans,cur);
+			
+			cur =1; flag = true;
+			sp=0; ep=toBeEvaluated.length()-2;
+			
+			while(sp<ep){
+				if(toBeEvaluated.charAt(sp)!=toBeEvaluated.charAt(ep)){
+					if(toBeEvaluated.charAt(sp)==sec){
+						sp++;
+						cur++;
+					}
+					else if(toBeEvaluated.charAt(ep)==sec){
+						ep--;
+						cur++;
+					}
+					else{
+						flag = false;
+						break;
+					}
+				}
+				else{
+					sp++;
+					ep--;
+				}
+			}
+			
+			if(flag) ans = Math.min(ans,cur);
+			
+			ps((ans==IMAX)?-1:ans);
+		
 		}
-	}
-	static long solve(int n, int k){
-		long ans = 1;
-		for(int i=1;i<=k;i++){
-			ans = (ans%MOD * n%MOD)%MOD;
-		}
-		return ans;
 	}
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;
