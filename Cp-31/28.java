@@ -4,44 +4,86 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
-			
 			int n = scn.nextInt();
-			int diff[] = new int[n];
+			int m = scn.nextInt();
 			
-			inarr(diff,scn);
+			int freq[] = new int[m];
 			
 			for(int i=0;i<n;i++){
-				int act = scn.nextInt();
-				diff[i] = act - diff[i];
+				int temp = scn.nextInt();
+				int moded = temp % m;
+				freq[moded]++;
 			}
+			int ans = (freq[0]==0)?0:1;
 			
-			int ans = 0;
-
-			Arrays.sort(diff);
-			
-			int sp=0, ep =n-1;
-			
-			while(sp<ep){
-				if(diff[sp]+diff[ep]>=0){
-					ans++;
-					sp++;
-					ep--;
+			for(int i=1;i<m;i++){
+				int rem = m-i;
+				if(freq[rem]==0){
+					ans += freq[i];
+					freq[i]=0;
+					continue;
+				}
+				
+				if(freq[i]==freq[rem]){
+					freq[i] = 0;
+					freq[rem] = 0;
+				}
+				else if(freq[i]>freq[rem]){
+					freq[i] -= freq[rem]+1;
+					freq[rem] = 0;
 				}
 				else{
-					sp++;
+					freq[rem] -= freq[i]+1;
+					freq[i] = 0;
 				}
+				
+				ans+=freq[i]+1;
+				freq[i] = 0;
 			}
 			
-			ps(ans);	
+			
+			// hasmap while itearting cannot do change
+			// so use iterator or the above
+			/*
+			for(int i : hm.keySet()){
+				
+				if(i==0){
+					ans+=1;
+					continue;
+				}
+				
+				int rem = m-i;
+				
+				int count_i = hm.get(i);
+				
+				if(!hm.containsKey(rem)){
+					ans+=count_i;
+					hm.remove(i);
+				}
+				else{
+					int count_r = hm.get(rem);
+					int remain = 0;
+					if(count_r==count_i){
+						hm.remove(rem);
+						hm.remove(i);
+					}
+					else if(count_r>count_i){
+						remain = count_r-count_i;
+						hm.remove(i);
+						hm.put(rem,remain);
+					}
+					else{
+						remain = count_i-count_r;
+						hm.remove(rem);
+						hm.put(i,remain);
+					}
+					ans++;
+				}
+			}
+			*/
+			ps(ans);
+			
 		}
-	}
-	
-	static long highest(long num){
-		
-		for(int i=63;i>=0;i--){
-			if((num&(1<<i))!=0) return i;
-		}
-		return 0;
 	}
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;

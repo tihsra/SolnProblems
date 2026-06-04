@@ -4,44 +4,41 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
-			
 			int n = scn.nextInt();
-			int diff[] = new int[n];
 			
-			inarr(diff,scn);
+			String curr = scn.next();
+			String goal = scn.next();
 			
-			for(int i=0;i<n;i++){
-				int act = scn.nextInt();
-				diff[i] = act - diff[i];
-			}
-			
-			int ans = 0;
-
-			Arrays.sort(diff);
-			
-			int sp=0, ep =n-1;
-			
-			while(sp<ep){
-				if(diff[sp]+diff[ep]>=0){
-					ans++;
-					sp++;
-					ep--;
-				}
-				else{
-					sp++;
-				}
-			}
-			
-			ps(ans);	
+			ps(solve(n,curr,goal));
 		}
 	}
-	
-	static long highest(long num){
+	static String solve(int n, String curr, String goal){
+		int pre[] = new int[n];
 		
-		for(int i=63;i>=0;i--){
-			if((num&(1<<i))!=0) return i;
+		pre[0] = (curr.charAt(0)=='1')?1:0;
+		for(int i=1;i<n;i++){
+			if(curr.charAt(i)=='1') pre[i] = pre[i-1]+1;
+			else pre[i] = pre[i-1];
 		}
-		return 0;
+		
+		int i = n-1;
+		int state = 0;
+		while(i>=0){
+			if(state%2==0){
+				if(curr.charAt(i)!=goal.charAt(i)){
+					if((i+1)%2!=0||pre[i]!=(i+1)/2) return "NO";
+					state++;
+				}
+			}
+			else{
+				if(curr.charAt(i)==goal.charAt(i)){
+					if((i+1)%2!=0||pre[i]!=(i+1)/2) return "NO";
+					state++;
+				}
+			}
+			i--;
+		}
+		return "YES";
 	}
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;

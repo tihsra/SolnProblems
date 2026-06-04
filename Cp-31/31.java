@@ -4,35 +4,25 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
-			
 			int n = scn.nextInt();
-			int diff[] = new int[n];
 			
-			inarr(diff,scn);
-			
+			HashMap<Long,Long> hm = new HashMap<>();
+						
 			for(int i=0;i<n;i++){
-				int act = scn.nextInt();
-				diff[i] = act - diff[i];
+				long temp = scn.nextInt();
+				temp = highest(temp);
+				long count = hm.getOrDefault(temp,0L)+1;
+				hm.put(temp,count);
 			}
 			
-			int ans = 0;
-
-			Arrays.sort(diff);
+			long ans = 0;
 			
-			int sp=0, ep =n-1;
-			
-			while(sp<ep){
-				if(diff[sp]+diff[ep]>=0){
-					ans++;
-					sp++;
-					ep--;
-				}
-				else{
-					sp++;
-				}
+			for(long i : hm.keySet()){
+				long same_count = hm.get(i);
+				ans += ((same_count-1)*same_count)/2;
 			}
 			
-			ps(ans);	
+			ps(ans);
 		}
 	}
 	

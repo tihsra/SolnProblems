@@ -5,34 +5,29 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			int n = scn.nextInt();
-			int diff[] = new int[n];
-			
-			inarr(diff,scn);
-			
-			for(int i=0;i<n;i++){
-				int act = scn.nextInt();
-				diff[i] = act - diff[i];
-			}
-			
-			int ans = 0;
+			int n = scn.nextInt(); //3
+			int m = scn.nextInt(); //
+			long arr[][] = new long[m][n];
 
-			Arrays.sort(diff);
-			
-			int sp=0, ep =n-1;
-			
-			while(sp<ep){
-				if(diff[sp]+diff[ep]>=0){
-					ans++;
-					sp++;
-					ep--;
-				}
-				else{
-					sp++;
+			for(int i=0;i<n;i++){
+				for(int j=0;j<m;j++){
+					arr[j][i] = scn.nextLong();
 				}
 			}
 			
-			ps(ans);	
+			long ans = 0;
+			
+			for(int i=0;i<m;i++){
+				
+				Arrays.sort(arr[i]);
+				
+				for(int j=0;j<n;j++){
+					ans += (j-(n-j-1))*arr[i][j];
+				}
+				
+			}
+			
+			ps(ans);
 		}
 	}
 	
