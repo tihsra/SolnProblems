@@ -4,35 +4,44 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = 1;
 		while(t-->0){
+			
 			int n = scn.nextInt();
 			long k = scn.nextLong();
 			long x = scn.nextLong();
 			
 			long arr[] = new long[n];
+			
 			lnarr(arr,scn);
 			
-			Arrays.sort(arr);
+			mergeSort(arr);
 			
-			long dif[] = new long[n-1];
 			
-			for(int i=0;i<n-1;i++) {dif[i] = arr[i+1]-arr[i];}
-			
-			int ans = 1;
+			long diff[] = new long[n-1];
 			
 			for(int i=0;i<n-1;i++){
-				if((dif[i]<=(2*x)&&dif[i]>x)&&k>0) {
-					k--;
-					//ps("did k-- for"+i);
+				diff[i] = arr[i+1]-arr[i];
+			}
+			
+			mergeSort(diff);
+			
+			long ans = 1;
+			
+			for(int i=0;i<n-1;i++){
+				if(diff[i]>x){
+					long req = diff[i]/x;
+					if(diff[i]%x==0) req--;
+					if(req>k) {
+						ans++;}
+					else{
+						k-=req;
 					}
-				else if(dif[i]>(2*x)||(dif[i]>x&&k<=0)){
-					ans++;
-					//ps("did ans++ for"+i);
 				}
 			}
 			
-			ps(ans);
+			ps(ans);		
 		}
 	}
+	
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;
 	static long LMAX = Long.MAX_VALUE;
@@ -90,8 +99,8 @@ public class Main{
 	static long sumfind(long start, long end){
 		return ((end-start+1)*(end+start)/2);
 	}
-	static void mergeSort(int[]a){int[]t=new int[a.length];ms(a,t,0,a.length-1);}
-	static void ms(int[]a,int[]t,int l,int r){
+	static void mergeSort(long[]a){long[]t=new long[a.length];ms(a,t,0,a.length-1);}
+	static void ms(long[]a,long[]t,int l,int r){
 		if(l>=r)return;
 		int m=(l+r)>>1;
 		ms(a,t,l,m);ms(a,t,m+1,r);
@@ -100,5 +109,5 @@ public class Main{
 		while(i<=m)t[k++]=a[i++];
 		while(j<=r)t[k++]=a[j++];
 		for(i=l;i<=r;i++)a[i]=t[i];
-	}
+}
 }

@@ -5,48 +5,28 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			int total = scn.nextInt();
 			int n = scn.nextInt();
+			int k = scn.nextInt();
 			
-			int arr[] = new int[n];
+			k--;
 			
-			inarr(arr,scn);
-			
-			Arrays.sort(arr);
-			
-			TreeMap<Integer,Integer> tm = new TreeMap<>(Collections.reverseOrder());
-			
-			for(int i=0;i<n;i++){
-				int res = 0;
-				if(i!=n-1){
-					res = arr[i+1]-arr[i]-1;
-				}
-				else{
-					res = arr[0] + total - arr[i] - 1; 
-				}
-				int curr = tm.getOrDefault(res,0)+1;
-				tm.put(res,curr);
+			if(n%2==0){
+				ps((k%n)+1);
+			}
+			else{
+				int temp = n/2;
+				ps(((k+(k/temp))%n)+1);
 			}
 			
-			int ans = 0;
-			int timestamp = 0;
-			
-			for(int key : tm.keySet()){
-				for(int k=0;k<tm.get(key);k++){
-					if((key-timestamp)<=0) continue;
-					if((key-timestamp)<3){
-						ans+=1;
-						timestamp++;
-					}
-					else{
-						ans+=(key-timestamp-1);
-						timestamp+=2;
-					}
-				}
-			}
-			
-			ps(total - ans);
 		}
+	}
+	
+	static long highest(long num){
+		
+		for(int i=63;i>=0;i--){
+			if((num&(1<<i))!=0) return i;
+		}
+		return 0;
 	}
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;

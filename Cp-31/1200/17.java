@@ -6,58 +6,59 @@ public class Main{
 		while(t-->0){
 			
 			int n = scn.nextInt();
-			int arr[] = new int[n];
+			long x = scn.nextLong();
 			
-			inarr(arr,scn);
+			long arr[] = new long[n];
 			
-			int fir = -1;
-			int sec = -1;
+			lnarr(arr,scn);
 			
-			for(int i=0;i<n;i++){
-				if(fir==-1) fir = i;
-				else if(sec==-1&&arr[i]!=arr[fir]) sec = i;
+			mergeSort(arr);
+			
+			long pre[] = new long[n];
+			
+			pre[0] = arr[0];
+			
+			for(int i=1;i<n;i++){
+				pre[i] = pre[i-1]+arr[i];
+			}
+			
+			long curr_ts = 0;
+			long ans = 0;
+			
+			for(int i=n-1;i>=0;i--){
 				
-				if(fir!=-1&&sec!=-1) break;
-			}
-			
-			if(sec==-1){
-				ps("NO");
-				continue;
-			}			
-			
-			ps("YES");
-			ps((fir+1)+" "+(sec+1));
-			
-			boolean secondOccuranceOfFir = false;
-			
-			for(int i=0;i<n;i++){
-				if(i==fir||i==sec) continue;
-				if(arr[i]==arr[fir]){
-					secondOccuranceOfFir = true;
-					continue;
-				}
-				ps((fir+1)+" "+(i+1));
-			}
-			
-			if(secondOccuranceOfFir){
-				for(int i=0;i<n;i++){
-					if(i==fir) continue;
-					if(arr[i]==arr[fir]){
-						
-						ps((sec+1)+" "+(i+1));
+				if(pre[i]+(curr_ts*(i+1))>x) continue;
+				
+				long sp = 0;
+				long ep = IMAX;
+				long curr = IMIN;
+				
+				while(sp<=ep){
+					long mid = sp + (ep-sp)/2; 
+					
+					if((pre[i]+(mid+curr_ts)*(i+1))>x){
+						ep=mid-1;
+					}
+					else{
+						sp=mid+1;
+						curr = mid;
 					}
 				}
+
+				if(pre[i]+curr_ts<=x) {
+					ans+=(i+1);
+					curr_ts++;
+				}
+				ans+=((i+1)*curr);
+				curr_ts += curr;
+				
 			}
+			
+			ps(ans);
+				
 		}
 	}
 	
-	static long highest(long num){
-		
-		for(int i=63;i>=0;i--){
-			if((num&(1<<i))!=0) return i;
-		}
-		return 0;
-	}
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;
 	static long LMAX = Long.MAX_VALUE;
@@ -115,8 +116,8 @@ public class Main{
 	static long sumfind(long start, long end){
 		return ((end-start+1)*(end+start)/2);
 	}
-	static void mergeSort(int[]a){int[]t=new int[a.length];ms(a,t,0,a.length-1);}
-	static void ms(int[]a,int[]t,int l,int r){
+	static void mergeSort(long[]a){long[]t=new long[a.length];ms(a,t,0,a.length-1);}
+	static void ms(long[]a,long[]t,int l,int r){
 		if(l>=r)return;
 		int m=(l+r)>>1;
 		ms(a,t,l,m);ms(a,t,m+1,r);
@@ -125,5 +126,5 @@ public class Main{
 		while(i<=m)t[k++]=a[i++];
 		while(j<=r)t[k++]=a[j++];
 		for(i=l;i<=r;i++)a[i]=t[i];
-	}
+}
 }
