@@ -5,54 +5,44 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			long n = scn.nextLong();
-			int l = scn.nextInt();
+			int n = scn.nextInt();
 			
-			long arr[] = new long[l];
+			ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
 			
-			lnarr(arr,scn);
-			
-			mergeSort(arr);
-			
-			long dist[] = new long[l];
-			
-			
-			for(int i=0;i<l-1;i++){
-				dist[i] = arr[i+1]-arr[i]-1;
+			for(int i = 0; i < n; i++) {
+				arr.add(new ArrayList<Integer>());
 			}
 			
-			dist[l-1] = (n - arr[l-1]) + arr[0] - 1;
+			HashMap<Integer,Integer> hm = new HashMap<>(); 
 			
-			mergeSort(dist);
-			
-			long ts = 0;
-			long ans = 0;
-			
-			for(int i=l-1;i>=0;i--){
-				
-				long rem = dist[i]-(2*ts);
-				
-				if(rem>=3){
-					ans+=(1+(2*ts));
-					ts+=2;
+			for(int i=0;i<n;i++){
+				int c = scn.nextInt();
+				for(int j=0;j<c;j++){
+					int temp = scn.nextInt();
+					arr.get(i).add(temp);
+					int xnt = hm.getOrDefault(temp,0)+1;
+					hm.put(temp,xnt);
 				}
-				else{
-					if(rem==1){
-						ans+=(2*ts);
-						ts+=1;
-					}
-					else if(rem==2){
-						ans+=(1+(2*ts));
-						ts+=1;
-					}
-					else{
-						ans+=dist[i];
-					}
-				}
-			
 			}
-			ps(ans+l);
-				
+			
+			boolean tf = false;
+			
+			for(int i=0;i<n;i++){
+				boolean find = true;
+				for(int j=0;j<arr.get(i).size();j++){
+					if(hm.get(arr.get(i).get(j))<=1){
+						find = false;
+						break;
+					}
+				}
+				if(find){
+					tf = true;
+					break;
+				}
+			}
+			
+			if(tf) ps("YES");
+			else ps("NO");
 		}
 	}
 	
@@ -83,7 +73,7 @@ public class Main{
 			this.y = y;
 		}
 		public int compareTo(Pair o){
-			return this.x-o.x;
+			return Integer.compare(this.x, o.x);
 		}
 	}
 	static class Tuple implements Comparable<Tuple>{
