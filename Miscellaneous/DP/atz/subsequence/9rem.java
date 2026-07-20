@@ -11,44 +11,38 @@ public class Main{
 
 			inarr(arr,scn);
 
-			int sum = 0;
-			for(int i : arr) sum+=i;
-
-			solve(n,k,arr,sum);
+			solve(n,k,arr);
 			
 		}
 	}
 
-	public static void solve(int n, int k, int arr[], int sum){
+	public static void solve(int n, int k, int arr[]){
+        
+        int memo[][] = new int[n][k+1];
 
-		ps(solver(n,k,arr,sum));
+        for(int i[] : memo) Arrays.fill(i,-1);
+
+		ps( solver(n,k,arr,0,memo));
 
 	}
 
-	public static int solver(int n, int k, int arr[], int sum){
+	public static int solver(int n, int k, int arr[], int idx, int memo[][]){
 
-    	int memo[][] = new int[n+1][2*sum+1];
+		if(k==0) return 1;
 
-    	memo[0][sum] = 1;
+        if(memo[idx][k]!=-1) return memo[idx][k];
+        
+		int ans = 0;
 
-    	for(int i=1;i<=n;i++){
-    	    for(int j=0;j<=2*sum;j++){
+		for(int i=idx;i<n;i++){
+			if(k-arr[i]>=0) ans += solver(n,k-arr[i],arr,i,memo);
+		}
 
-    	        int pos = 0;
-    	        if(j-arr[i-1]>=0) pos = memo[i-1][j-arr[i-1]];
+        memo[idx][k] = ans;
 
-    	        int neg = 0;
-    	        if(j+arr[i-1]<=2*sum) neg = memo[i-1][j+arr[i-1]];
+		return memo[idx][k];
 
-    	        memo[i][j] = pos+neg;
-    	    }
-    	}
-
-    	if(k+sum<0 || k+sum>2*sum) return 0;
-
-    return memo[n][k+sum];
-
-}
+	}
 
 
 	static int MOD = 1000000007;

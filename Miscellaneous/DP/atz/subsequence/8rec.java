@@ -11,44 +11,26 @@ public class Main{
 
 			inarr(arr,scn);
 
-			int sum = 0;
-			for(int i : arr) sum+=i;
-
-			solve(n,k,arr,sum);
+			solve(n,k,arr);
 			
 		}
 	}
 
-	public static void solve(int n, int k, int arr[], int sum){
+	public static void solve(int n, int k, int arr[]){
 
-		ps(solver(n,k,arr,sum));
+		ps(solver(n,k,arr,0));
 
 	}
 
-	public static int solver(int n, int k, int arr[], int sum){
+	public static int solver(int n, int k, int arr[], int idx){
 
-    	int memo[][] = new int[n+1][2*sum+1];
+		if(idx>=n) return (k==0)?1:0;
+		
+		int pos = solver(n,k-arr[idx],arr,idx+1);
+		int neg = solver(n,k+arr[idx],arr,idx+1);
 
-    	memo[0][sum] = 1;
-
-    	for(int i=1;i<=n;i++){
-    	    for(int j=0;j<=2*sum;j++){
-
-    	        int pos = 0;
-    	        if(j-arr[i-1]>=0) pos = memo[i-1][j-arr[i-1]];
-
-    	        int neg = 0;
-    	        if(j+arr[i-1]<=2*sum) neg = memo[i-1][j+arr[i-1]];
-
-    	        memo[i][j] = pos+neg;
-    	    }
-    	}
-
-    	if(k+sum<0 || k+sum>2*sum) return 0;
-
-    return memo[n][k+sum];
-
-}
+		return pos+neg;
+	}
 
 
 	static int MOD = 1000000007;

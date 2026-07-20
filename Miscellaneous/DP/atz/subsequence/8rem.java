@@ -1,54 +1,51 @@
 import java.util.*;
 public class Main{
 	public static void main(String[] args){
-		Scanner scn = new Scanner(System.in);
-		int t = scn.nextInt();
-		while(t-->0){
-			
-			int n = scn.nextInt();
-			int k = scn.nextInt();
-			int arr[] = new int[n];
-
-			inarr(arr,scn);
-
-			int sum = 0;
-			for(int i : arr) sum+=i;
-
-			solve(n,k,arr,sum);
-			
-		}
+	    Scanner scn = new Scanner(System.in);
+	    int t = scn.nextInt();
+	    while(t-->0){
+		
+	        int n = scn.nextInt();
+	        int k = scn.nextInt();
+	        k = Math.abs(k);
+	        int arr[] = new int[n];
+	
+	        inarr(arr,scn);             
+	
+	        int sum = 0;
+	        for(int i=0;i<n;i++) sum+=arr[i];
+	
+	        solve(n,k,arr,sum);
+	
+	    }
 	}
-
+	
 	public static void solve(int n, int k, int arr[], int sum){
-
-		ps(solver(n,k,arr,sum));
-
+	
+	    int memo[][] = new int[n][2*sum+1];
+	    for(int[] row : memo) Arrays.fill(row,-1);
+	
+	    ps(solver(n,k,arr,0,memo,sum));
+	
 	}
-
-	public static int solver(int n, int k, int arr[], int sum){
-
-    	int memo[][] = new int[n+1][2*sum+1];
-
-    	memo[0][sum] = 1;
-
-    	for(int i=1;i<=n;i++){
-    	    for(int j=0;j<=2*sum;j++){
-
-    	        int pos = 0;
-    	        if(j-arr[i-1]>=0) pos = memo[i-1][j-arr[i-1]];
-
-    	        int neg = 0;
-    	        if(j+arr[i-1]<=2*sum) neg = memo[i-1][j+arr[i-1]];
-
-    	        memo[i][j] = pos+neg;
-    	    }
-    	}
-
-    	if(k+sum<0 || k+sum>2*sum) return 0;
-
-    return memo[n][k+sum];
-
-}
+	
+	public static int solver(int n, int k, int arr[], int idx, int memo[][], int sum){
+	
+	    if(idx>=n) return (k==0)?1:0;
+	
+	    int offK = k+sum;                          
+	    if(offK<0 || offK>2*sum) return 0;         
+	
+	    if(memo[idx][offK]!=-1) return memo[idx][offK];
+	
+	    int pos = solver(n,k-arr[idx],arr,idx+1,memo,sum);
+	    int neg = solver(n,k+arr[idx],arr,idx+1,memo,sum);
+	
+	    memo[idx][offK] = pos+neg;
+	
+	    return memo[idx][offK];
+	
+	}
 
 
 	static int MOD = 1000000007;
