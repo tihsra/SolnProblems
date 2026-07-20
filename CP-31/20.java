@@ -6,35 +6,24 @@ public class Main{
 		while(t-->0){
 			
 			int n = scn.nextInt();
-			int arr[] = new int[n-1];
+			int x = scn.nextInt();
+			int m = scn.nextInt();
 			
-			inarr(arr,scn);
+			int min = x;
+			int max = x;
 			
-			ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
-			
-			for(int i=0;i<n-1;i++) graph.get(i).add(new ArrayList<Integer>());
-			
-			for(int i=0;i<n-1;i++){
-				graph.get(arr[i]).add(i);
-				graph.get(i).add(arr[i]);
-			}
-			
-			boolean vis[] = new boolean[n];
-			
-			Queue<Pair> qu= new LinkedList<>();
-			
-			qu.add(new Pair(0,-1));
-			
-			while(qu.size()>0){
-				int size = qu.size();
-				int parent = 0;
-				for(int i=0;i<size;i++){
-					Pair curr = qu.remove();
-					ArrayList<Integer> 
-					for()
+			for(int i=0;i<m;i++){
+				int l = scn.nextInt();
+				int r = scn.nextInt();
+				
+				if(min>r||max<l) continue;
+				else{
+					min = Math.min(min,l);
+					max = Math.max(max,r);
 				}
 			}
 			
+			ps(max-min+1);
 		}
 	}
 	static int MOD = 1000000007;
@@ -46,12 +35,14 @@ public class Main{
 	static void pns(Object o){System.out.print(o);}
 	static void inarr(int[] arr, Scanner scn){
 		for(int i = 0; i < arr.length; i++){
-			arr[i] = scn.nextInt();
+			 int temp = scn.nextInt();
+			 arr[i] = temp;
 		}
 	}
 	static void lnarr(long[] arr, Scanner scn){
 		for(int i = 0; i < arr.length; i++){
-			arr[i] = scn.nextLong();
+			long temp = scn.nextLong();
+			arr[i] = temp;
 		}
 	}  
 	static class Pair implements Comparable<Pair>{
@@ -62,7 +53,7 @@ public class Main{
 			this.y = y;
 		}
 		public int compareTo(Pair o){
-			return this.x-o.x;
+			return Integer.compare(this.x, o.x);
 		}
 	}
 	static class Tuple implements Comparable<Tuple>{
@@ -78,12 +69,12 @@ public class Main{
 			return this.x-o.x;
 		}
 	}
-	static long lcm(long a, long b){
+	static int lcm(int a, int b){
 		return (a*b)/gcd(a,b);
 	}
-	static long gcd(long a, long b){
+	static int gcd(int a, int b){
 		while(a!=0){
-			long temp = a;
+			int temp = a;
 			a = b%a;
 			b = temp;
 		}
@@ -92,8 +83,8 @@ public class Main{
 	static long sumfind(long start, long end){
 		return ((end-start+1)*(end+start)/2);
 	}
-	static void mergeSort(int[]a){int[]t=new int[a.length];ms(a,t,0,a.length-1);}
-	static void ms(int[]a,int[]t,int l,int r){
+	static void mergeSort(long[]a){long[]t=new long[a.length];ms(a,t,0,a.length-1);}
+	static void ms(long[]a,long[]t,int l,int r){
 		if(l>=r)return;
 		int m=(l+r)>>1;
 		ms(a,t,l,m);ms(a,t,m+1,r);
@@ -102,5 +93,5 @@ public class Main{
 		while(i<=m)t[k++]=a[i++];
 		while(j<=r)t[k++]=a[j++];
 		for(i=l;i<=r;i++)a[i]=t[i];
-	}
+}
 }

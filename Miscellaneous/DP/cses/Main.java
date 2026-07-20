@@ -4,37 +4,7 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
-			
-			int n = scn.nextInt();
-			int arr[] = new int[n-1];
-			
-			inarr(arr,scn);
-			
-			ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
-			
-			for(int i=0;i<n-1;i++) graph.get(i).add(new ArrayList<Integer>());
-			
-			for(int i=0;i<n-1;i++){
-				graph.get(arr[i]).add(i);
-				graph.get(i).add(arr[i]);
-			}
-			
-			boolean vis[] = new boolean[n];
-			
-			Queue<Pair> qu= new LinkedList<>();
-			
-			qu.add(new Pair(0,-1));
-			
-			while(qu.size()>0){
-				int size = qu.size();
-				int parent = 0;
-				for(int i=0;i<size;i++){
-					Pair curr = qu.remove();
-					ArrayList<Integer> 
-					for()
-				}
-			}
-			
+			int n = scn.e
 		}
 	}
 	static int MOD = 1000000007;
