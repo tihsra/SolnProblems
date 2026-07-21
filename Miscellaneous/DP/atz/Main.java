@@ -4,19 +4,64 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
-			int a = scn.nextInt();
-			int b = scn.nextInt();
+			
+			String a = scn.next();
+			String b = scn.next();
 
-			ps(a+" "+b);
-
-			a = b-a;
-			b = b-a;
-			a = a+b;
-
-			ps(a+" "+b);
-
+			solve(a,b);
+			
 		}
 	}
+
+	public static void solve(String a, String b){
+
+		ps(solver(a,b)); // a is patter here 
+
+	}
+
+	public static boolean solver(String a, String b){  // a is patter here 
+
+		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
+
+		memo[0][0] = true;
+
+		// have to fill b.length() == 0 base case 
+
+		for(int i=1;i<=a.length();i++){
+
+			if(a.charAt(i-1)!='*'){
+				memo[i][0] = false;
+				continue;
+			}
+
+			memo[i][0] = memo[i-1][0];
+
+		}
+
+		for(int i=1;i<=a.length();i++){
+			for(int j=1;j<=b.length();j++){
+
+				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
+					memo[i][j] =  memo[i-1][j-1];
+					continue;
+				}
+				
+				if(a.charAt(i-1)=='*'){
+					boolean matchTillHere = memo[i-1][j];
+					boolean matchBackward = memo[i][j-1];
+					memo[i][j] =  matchTillHere||matchBackward;
+					continue;
+				}
+
+				memo[i][j] = false;
+
+			}
+		}
+
+		return memo[a.length()][b.length()];
+
+	}
+
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;
 	static long LMAX = Long.MAX_VALUE;
@@ -26,12 +71,14 @@ public class Main{
 	static void pns(Object o){System.out.print(o);}
 	static void inarr(int[] arr, Scanner scn){
 		for(int i = 0; i < arr.length; i++){
-			arr[i] = scn.nextInt();
+			 int temp = scn.nextInt();
+			 arr[i] = temp;
 		}
 	}
 	static void lnarr(long[] arr, Scanner scn){
 		for(int i = 0; i < arr.length; i++){
-			arr[i] = scn.nextLong();
+			long temp = scn.nextLong();
+			arr[i] = temp;
 		}
 	}  
 	static class Pair implements Comparable<Pair>{
@@ -42,7 +89,7 @@ public class Main{
 			this.y = y;
 		}
 		public int compareTo(Pair o){
-			return this.x-o.x;
+			return Integer.compare(this.x, o.x);
 		}
 	}
 	static class Tuple implements Comparable<Tuple>{
@@ -72,8 +119,8 @@ public class Main{
 	static long sumfind(long start, long end){
 		return ((end-start+1)*(end+start)/2);
 	}
-	static void mergeSort(int[]a){int[]t=new int[a.length];ms(a,t,0,a.length-1);}
-	static void ms(int[]a,int[]t,int l,int r){
+	static void mergeSort(long[]a){long[]t=new long[a.length];ms(a,t,0,a.length-1);}
+	static void ms(long[]a,long[]t,int l,int r){
 		if(l>=r)return;
 		int m=(l+r)>>1;
 		ms(a,t,l,m);ms(a,t,m+1,r);

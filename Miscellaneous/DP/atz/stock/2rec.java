@@ -4,8 +4,46 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
+			
+			int n = scn.nextInt();
+			int arr[] = new int[n];
+
+			inarr(arr,scn);
+
+			solve(n,arr);
+			
 		}
 	}
+
+	public static void solve(int n, int arr[]){
+
+		ps(solver(n,arr,1,0)); 
+
+	}
+
+	public static int solver(int n, int arr[], int bos, int i){  
+
+		if(i>=n) return 0;
+
+		if(bos==1){ // buy
+
+			int buyIt = solver(n,arr,0,i+1)-arr[i];
+			int notBuyIt = solver(n,arr,1,i+1);
+
+			return Math.max(buyIt, notBuyIt);
+
+		}
+
+		else{
+			
+			int sellIt = solver(n,arr,1,i+1)+arr[i];
+			int notSellIt = solver(n,arr,0,i+1);
+
+			return Math.max(sellIt, notSellIt);
+		}
+
+	}
+
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;
 	static long LMAX = Long.MAX_VALUE;
@@ -15,12 +53,14 @@ public class Main{
 	static void pns(Object o){System.out.print(o);}
 	static void inarr(int[] arr, Scanner scn){
 		for(int i = 0; i < arr.length; i++){
-			arr[i] = scn.nextInt();
+			 int temp = scn.nextInt();
+			 arr[i] = temp;
 		}
 	}
 	static void lnarr(long[] arr, Scanner scn){
 		for(int i = 0; i < arr.length; i++){
-			arr[i] = scn.nextLong();
+			long temp = scn.nextLong();
+			arr[i] = temp;
 		}
 	}  
 	static class Pair implements Comparable<Pair>{
@@ -31,7 +71,7 @@ public class Main{
 			this.y = y;
 		}
 		public int compareTo(Pair o){
-			return this.x-o.x;
+			return Integer.compare(this.x, o.x);
 		}
 	}
 	static class Tuple implements Comparable<Tuple>{
@@ -61,8 +101,8 @@ public class Main{
 	static long sumfind(long start, long end){
 		return ((end-start+1)*(end+start)/2);
 	}
-	static void mergeSort(int[]a){int[]t=new int[a.length];ms(a,t,0,a.length-1);}
-	static void ms(int[]a,int[]t,int l,int r){
+	static void mergeSort(long[]a){long[]t=new long[a.length];ms(a,t,0,a.length-1);}
+	static void ms(long[]a,long[]t,int l,int r){
 		if(l>=r)return;
 		int m=(l+r)>>1;
 		ms(a,t,l,m);ms(a,t,m+1,r);
