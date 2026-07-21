@@ -15,51 +15,28 @@ public class Main{
 
 	public static void solve(String a, String b){
 
-		ps(solver(a,b)); // a is patter here 
+		ps(solver(a,b,0,0));
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
+	public static int solver(String a, String b, int i, int j){
 
-		memo[0][0] = true;
+		if(j>=b.length()) return a.length()-i; 
 
-		// have to fill b.length() == 0 base case 
+		if(i>=a.length()) return b.length()-j;
 
-		for(int i=1;i<=a.length();i++){
-
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
-
-			memo[i][0] = memo[i-1][0];
-
+		if(a.charAt(i)==b.charAt(j)){
+			return solver(a,b,i+1,j+1);
 		}
 
-		for(int i=1;i<=a.length();i++){
-			for(int j=1;j<=b.length();j++){
+		int insert = 1+solver(a,b,i,j+1);
+		int delete = 1+solver(a,b,i+1,j);
+		int replace = 1+solver(a,b,i+1,j+1);
 
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
-					continue;
-				}
+		return Math.min(insert,Math.min(delete,replace));
 
-				memo[i][j] = false;
-
-			}
-		}
-
-		return memo[a.length()][b.length()];
-
+		
 	}
 
 	static int MOD = 1000000007;

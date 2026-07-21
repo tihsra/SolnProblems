@@ -15,45 +15,30 @@ public class Main{
 
 	public static void solve(String a, String b){
 
-		ps(solver(a,b)); // a is patter here 
+		ps(solver(a,b));
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
+	public static int solver(String a, String b){
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
-
-		memo[0][0] = true;
-
-		// have to fill b.length() == 0 base case 
-
-		for(int i=1;i<=a.length();i++){
-
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
-
-			memo[i][0] = memo[i-1][0];
-
-		}
+		int memo[][] = new int[a.length()+1][b.length()+1];
+		
+		for(int i=0;i<=b.length();i++) memo[0][i] = i;
+		for(int i=0;i<=a.length();i++) memo[i][0] = i;
 
 		for(int i=1;i<=a.length();i++){
 			for(int j=1;j<=b.length();j++){
 
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
+				if(a.charAt(i-1)==b.charAt(j-1)){
+					memo[i][j] = memo[i-1][j-1];
 					continue;
 				}
 
-				memo[i][j] = false;
+				int insert = memo[i][j-1];
+				int delete = memo[i-1][j];
+				int replace = memo[i-1][j-1];
+
+				memo[i][j] = 1 + Math.min(insert,Math.min(delete,replace)); 
 
 			}
 		}

@@ -15,51 +15,33 @@ public class Main{
 
 	public static void solve(String a, String b){
 
-		ps(solver(a,b)); // a is patter here 
+		ps(solver(a,b,0,0)); // a is patter here 
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
+	public static boolean solver(String a, String b, int i, int j){  // a is patter here 
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
-
-		memo[0][0] = true;
-
-		// have to fill b.length() == 0 base case 
-
-		for(int i=1;i<=a.length();i++){
-
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
-
-			memo[i][0] = memo[i-1][0];
-
+		if(i>=a.length()){
+			return (j==b.length())?true:false;
 		}
 
-		for(int i=1;i<=a.length();i++){
-			for(int j=1;j<=b.length();j++){
-
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
-					continue;
-				}
-
-				memo[i][j] = false;
-
-			}
+		if(j>=b.length()){
+			while(i<a.length() && a.charAt(i)=='*') i++;
+			return (i==a.length())?true:false;
 		}
 
-		return memo[a.length()][b.length()];
+		if(a.charAt(i)==b.charAt(j)||a.charAt(i)=='?'){
+			return solver(a,b,i+1,j+1);
+		}
 
+		if(a.charAt(i)=='*'){
+			boolean matchTillHere = solver(a,b,i+1,j);
+			boolean matchForward = solver(a,b,i,j+1);
+
+			return matchTillHere||matchForward;
+		}
+
+		return false;
 	}
 
 	static int MOD = 1000000007;
