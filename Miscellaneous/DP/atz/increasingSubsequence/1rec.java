@@ -17,29 +17,26 @@ public class Main{
 
 	public static void solve(int n, int arr[]){
 
-		ps(solver(n,arr)); 
+		ps(solver(n,arr,0,-1)); 
 
 	}
 
-	public static int solver(int n, int arr[]){ 
+	public static int solver(int n, int arr[], int idx, int pre){ 
 
-		int memo[] = new int[n];
+		if(idx>=n) return 0;
 
-		int max = IMIN;
+		int max = 0;
 
-		for(int i=1;i<n;i++){
-			for(int j=i-1;j>=0;j--){
-				if(arr[i]>arr[j]) memo[i] = Math.max(memo[i],1+memo[j]); 
+		for(int i=idx;i<n;i++){
+
+			if(pre==-1){
+				 max = Math.max(max,1+solver(n,arr,i+1,i));
+				 continue;
 			}
-			max = Math.max(max,memo[i]);
 
+			if(arr[i]>arr[pre]) max = Math.max(max,1+solver(n,arr,i+1,i));
 		}
-
-		int ans = 0;
-
-		for(int i=0;i<n;i++) if(memo[i]==max) ans++;
-		
-		return ; // plus one because there is always a subsequence of length 1 which exist for any given element of array {array element itself};
+		return max;
 	
 	}
 

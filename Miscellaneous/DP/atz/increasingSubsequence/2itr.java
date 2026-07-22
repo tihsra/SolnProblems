@@ -10,6 +10,8 @@ public class Main{
 
 			inarr(arr,scn);
 
+			Arrays.sort(arr);
+
 			solve(n,arr);
 			
 		}
@@ -17,30 +19,35 @@ public class Main{
 
 	public static void solve(int n, int arr[]){
 
-		ps(solver(n,arr)); 
+    	int memo[] = new int[n];
+    	int parent[] = new int[n];
 
-	}
+    	Arrays.fill(parent, -1); 
 
-	public static int solver(int n, int arr[]){ 
+    	int max = 0;
+    	int maxIdx = 0;
 
-		int memo[] = new int[n];
+    	for(int i=1; i<n; i++){
+    	    for(int j=i-1; j>=0; j--){
+    	        if(arr[i]%arr[j]==0 && 1+memo[j] > memo[i]){
+    	            memo[i] = 1 + memo[j];
+    	            parent[i] = j;   
+    	        }
+    	    }
+    	    if(memo[i] > max){
+    	        max = memo[i];
+    	        maxIdx = i;
+    	    }
+    	}
 
-		int max = IMIN;
-
-		for(int i=1;i<n;i++){
-			for(int j=i-1;j>=0;j--){
-				if(arr[i]>arr[j]) memo[i] = Math.max(memo[i],1+memo[j]); 
-			}
-			max = Math.max(max,memo[i]);
-
-		}
-
-		int ans = 0;
-
-		for(int i=0;i<n;i++) if(memo[i]==max) ans++;
+    	List<Integer> lis = new ArrayList<>();
+    	int cur = maxIdx;
+    	while(cur != -1){
+    	    lis.add(arr[cur]);
+    	    cur = parent[cur];
+    	}
+    	Collections.reverse(lis);
 		
-		return ; // plus one because there is always a subsequence of length 1 which exist for any given element of array {array element itself};
-	
 	}
 
 	static int MOD = 1000000007;

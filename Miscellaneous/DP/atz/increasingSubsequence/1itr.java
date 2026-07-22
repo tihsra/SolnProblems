@@ -34,12 +34,8 @@ public class Main{
 			max = Math.max(max,memo[i]);
 
 		}
-
-		int ans = 0;
-
-		for(int i=0;i<n;i++) if(memo[i]==max) ans++;
 		
-		return ; // plus one because there is always a subsequence of length 1 which exist for any given element of array {array element itself};
+		return max+1; // plus one because there is always a subsequence of length 1 which exist for any given element of array {array element itself};
 	
 	}
 
