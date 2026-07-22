@@ -1,64 +1,64 @@
-cdimport java.util.*;
+import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			String a = scn.next();
-			String b = scn.next();
+			int n = scn.nextInt();
+			int m = scn.nextInt();
 
-			solve(a,b);
+			int arr[][] = new int[n][m];
+
+			for(int subArr[] : arr) inarr(subArr,scn);
+
+			solve(n,m,arr);
 			
 		}
 	}
 
-	public static void solve(String a, String b){
+	public static void solve(int n, int m, int arr[][]){
 
-		ps(solver(a,b)); // a is patter here 
+		int sum = 0;
+
+		int memo[][] = new int[n][m];
+
+		for(int subArr[] : memo) Arrays.fill(subArr,-1); 
+
+		for(int i=0;i<n;i++){
+			for(int j=0;j<m;j++){
+				sum += solver(n,m,arr,i,j,memo);
+			}
+		}
+
+		ps(sum);
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
+	public static int solver(int n, int m, int arr[][], int i, int j, int memo[][]){  
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
 
-		memo[0][0] = true;
+		// at a point i , j what decision can i take ????
 
-		// have to fill b.length() == 0 base case 
+		if(i>=n||j>=m) return 0;
 
-		for(int i=1;i<=a.length();i++){
+		if(memo[i][j]!=-1) return memo[i][j];
+ 
+		if(arr[i][j]==1){
+			
+			int right = solver(n,m,arr,i,j+1,memo);
+			int bottom = solver(n,m,arr,i+1,j,memo);
+			int diagonal =  solver(n,m,arr,i+1,j+1,memo);
 
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
+			memo[i][j] = 1+Math.min(right,Math.min(bottom,diagonal));
 
-			memo[i][0] = memo[i-1][0];
-
+			return memo[i][j];
+			
 		}
 
-		for(int i=1;i<=a.length();i++){
-			for(int j=1;j<=b.length();j++){
+		memo[i][j] = 0;
 
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
-					continue;
-				}
-
-				memo[i][j] = false;
-
-			}
-		}
-
-		return memo[a.length()][b.length()];
+		return memo[i][j];
 
 	}
 

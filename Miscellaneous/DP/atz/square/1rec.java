@@ -1,64 +1,58 @@
-cdimport java.util.*;
+// Question : Get the maximum area square
+
+// -________-: Not what the qeustion in sheet asked to do 
+
+import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			String a = scn.next();
-			String b = scn.next();
+			int n = scn.nextInt();
+			int m = scn.nextInt();
 
-			solve(a,b);
+			int arr[][] = new int[n][m];
+
+			for(int subArr[] : arr) inarr(subArr,scn);
+
+			solve(n,m,arr);
 			
 		}
 	}
 
-	public static void solve(String a, String b){
+	public static void solve(int n, int m, int arr[][]){
 
-		ps(solver(a,b)); // a is patter here 
+		int max = IMIN;
+
+		for(int i=0;i<n;i++){
+			for(int j=0;j<m;j++){
+				max = Math.max(max,solver(n,m,arr,i,j));
+			}
+		}
+
+		ps(max);
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
+	public static int solver(int n, int m, int arr[][], int i, int j){  
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
 
-		memo[0][0] = true;
+		// at a point i , j what decision can i take ????
 
-		// have to fill b.length() == 0 base case 
+		if(i>=n||j>=m) return 0;
+ 
+		if(arr[i][j]==1){
+			
+			int right = solver(n,m,arr,i,j+1);
+			int bottom = solver(n,m,arr,i+1,j);
+			int diagonal =  solver(n,m,arr,i+1,j+1);
 
-		for(int i=1;i<=a.length();i++){
-
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
-
-			memo[i][0] = memo[i-1][0];
-
+			return 1+Math.min(right,Math.min(bottom,diagonal));
+			
 		}
 
-		for(int i=1;i<=a.length();i++){
-			for(int j=1;j<=b.length();j++){
-
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
-					continue;
-				}
-
-				memo[i][j] = false;
-
-			}
-		}
-
-		return memo[a.length()][b.length()];
+		return 0;
 
 	}
 

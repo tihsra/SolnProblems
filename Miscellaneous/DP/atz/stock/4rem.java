@@ -1,64 +1,69 @@
-cdimport java.util.*;
+import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			String a = scn.next();
-			String b = scn.next();
+			int n = scn.nextInt();
+			int times = scn.nextInt();
+			int arr[] = new int[n];
 
-			solve(a,b);
+			inarr(arr,scn);
+
+			solve(n,arr,times);
 			
 		}
 	}
 
-	public static void solve(String a, String b){
+	public static void solve(int n, int arr[], int times){
 
-		ps(solver(a,b)); // a is patter here 
+
+		int memo[][][] = new int[n][2][times+1];
+
+		for(int mainArr[][] : memo) for(int subArr[]: mainArr) Arrays.fill(subArr,-1); // needed in order to check visited or not 
+
+		ps(solver(n,arr,times,0,1,memo)); 
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
+	public static int solver(int n, int arr[], int times, int idx, int buy, int[][][] memo){
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
 
-		memo[0][0] = true;
+		//bc 
 
-		// have to fill b.length() == 0 base case 
+		if(idx>=n||times==0){
+			return 0;
+		}
 
-		for(int i=1;i<=a.length();i++){
+		// we say if i completed a trn then
+		// find from the next idx coz till here is we made some t transaction already and they are maximum we could 
+		// therefore cannot find another trn there
+		// have to track buy/sell state also for obvious reason
 
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
+		// have to memoize because the tc there is 2^n 
 
-			memo[i][0] = memo[i-1][0];
+		// what is needed to memoize
+		// track idx, buy?, times
+
+		if(memo[idx][buy][times]!=-1) return memo[idx][buy][times];
+
+		if(buy==1){  //denotes we could buy
+
+			int buyIt = solver(n,arr,times,idx+1,0,memo)-arr[idx];
+			int notBuyIt = solver(n,arr,times,idx+1,1,memo);
+
+			memo[idx][buy][times] = Math.max(buyIt,notBuyIt);
+			return memo[idx][buy][times];
 
 		}
 
-		for(int i=1;i<=a.length();i++){
-			for(int j=1;j<=b.length();j++){
+		int sellIt = solver(n,arr,times-1,idx+1,1,memo)+arr[idx];
+		int notSellIt = solver(n,arr,times,idx+1,0,memo);
 
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
-					continue;
-				}
+		memo[idx][buy][times] = Math.max(sellIt,notSellIt);
 
-				memo[i][j] = false;
-
-			}
-		}
-
-		return memo[a.length()][b.length()];
+		return memo[idx][buy][times];
 
 	}
 

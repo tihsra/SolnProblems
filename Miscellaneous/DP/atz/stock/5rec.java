@@ -1,64 +1,46 @@
-cdimport java.util.*;
+import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			String a = scn.next();
-			String b = scn.next();
+			int n = scn.nextInt();
+			int arr[] = new int[n];
 
-			solve(a,b);
+			inarr(arr,scn);
+
+			solve(n,arr);
 			
 		}
 	}
 
-	public static void solve(String a, String b){
+	public static void solve(int n, int arr[]){
 
-		ps(solver(a,b)); // a is patter here 
+		ps(solver(n,arr,1,0)); 
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
+	public static int solver(int n, int arr[], int buy, int idx){
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
+		if(idx>=n){
+			return 0;
+		}
 
-		memo[0][0] = true;
+		if(buy==1){
 
-		// have to fill b.length() == 0 base case 
+			int buyIt = solver(n,arr,0,idx+1)-arr[idx];
+			int notBuyIt = solver(n,arr,1,idx+1);
 
-		for(int i=1;i<=a.length();i++){
-
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
-
-			memo[i][0] = memo[i-1][0];
+			return Math.max(buyIt,notBuyIt);
 
 		}
 
-		for(int i=1;i<=a.length();i++){
-			for(int j=1;j<=b.length();j++){
+		int sellit = solver(n,arr,1,idx+2)+arr[idx]; // transaction complete thereby cannot buy on the next day;
+		int notSellIt = solver(n,arr,0,idx+1);
 
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
-					continue;
-				}
+		return Math.max(sellit,notSellIt);
 
-				memo[i][j] = false;
-
-			}
-		}
-
-		return memo[a.length()][b.length()];
 
 	}
 

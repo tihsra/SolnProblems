@@ -24,31 +24,51 @@ public class Main{
 
 	public static int solver(int n, int arr[], int times){
 
-    	int memo[][][] = new int[n+1][2][times+1];
+		int memo[][][] = new int[n+1][2][times+1];
 
-    	for(int k=0;k<=times;k++){
-    	    memo[0][0][k] = (k==0) ? 0 : IMIN/2;
-    	    memo[0][1][k] = IMIN/2;
-    	}
+		for(int i=0;i<=n;i++){ //  BC FOR TIMES = 0
+			
+			memo[i][0][0] = 0;// sell 
 
-    	for(int i=1;i<=n;i++){
-    	    for(int k=0;k<=times;k++){
+			memo[i][1][0] = IMIN/2;// buy 
 
-    	        int notBuyIt = memo[i-1][1][k];
-    	        int buyIt = memo[i-1][0][k]-arr[i-1];
-    	        memo[i][1][k] = Math.max(buyIt,notBuyIt);
+		}
 
-    	        int notSellIt = memo[i-1][0][k];
-    	        int sellIt = (k-1>=0) ? memo[i-1][1][k-1]+arr[i-1] : IMIN;
-    	        memo[i][0][k] = Math.max(sellIt,notSellIt);
-    	    }
-    	}
+		for(int i=0;i<=times;i++){
 
-    	int ans = 0;
-    	for(int k=0;k<=times;k++){
-    	    ans = Math.max(ans, memo[n][0][k]);
-    	}
-    	return ans;
+			memo[0][0][i] = 0;
+
+			memo[0][1][i] = IMIN/2;
+
+		}
+
+		for(int i=1;i<=n;i++){
+			for(int j=1;j<=times;j++){
+
+
+				// Buy case:
+
+				// why shift transaction here becasue we will ask previoous state
+				// if this state is buy mening we have completed a transation in during the before
+				// becasue we are thinking in reverse here have to keep this in mind
+
+				int buyIt = memo[i-1][0][j-1]-arr[i-1]; 
+				int notBuyIt = memo[i-1][1][j];
+				
+				memo[i][1][j] = Math.max(buyIt, notBuyIt);
+
+				// Sell case:
+
+				int sellIt = memo[i-1][1][j]+arr[i-1];
+				int notSellIt = memo[i-1][0][j];
+				
+				memo[i][0][j] = Math.max(sellIt, notSellIt);
+
+			}
+		} 
+
+		return memo[n][0][times];
+
 	}
 
 	static int MOD = 1000000007;

@@ -1,64 +1,55 @@
-cdimport java.util.*;
+import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			String a = scn.next();
-			String b = scn.next();
+			int n = scn.nextInt();
+			int arr[] = new int[n];
 
-			solve(a,b);
+			inarr(arr,scn);
+
+			solve(n,arr);
 			
 		}
 	}
 
-	public static void solve(String a, String b){
+	public static void solve(int n, int arr[]){
 
-		ps(solver(a,b)); // a is patter here 
+		int memo[][] = new int[n][2];
+
+		for(int mainArr[] : memo) Arrays.fill(mainArr,-1);
+
+		ps(solver(n,arr,1,0,memo)); 
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
+	public static int solver(int n, int arr[], int buy, int idx, int memo[][]){
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
+		if(idx>=n){
+			return 0;
+		}
 
-		memo[0][0] = true;
+		if(memo[idx][buy]!=-1) return memo[idx][buy];
 
-		// have to fill b.length() == 0 base case 
+		if(buy==1){
 
-		for(int i=1;i<=a.length();i++){
+			int buyIt = solver(n,arr,0,idx+1,memo)-arr[idx];
+			int notBuyIt = solver(n,arr,1,idx+1,memo);
 
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
+			memo[idx][buy] = Math.max(buyIt,notBuyIt);
 
-			memo[i][0] = memo[i-1][0];
+			return memo[idx][buy];
 
 		}
 
-		for(int i=1;i<=a.length();i++){
-			for(int j=1;j<=b.length();j++){
+		int sellit = solver(n,arr,1,idx+2,memo)+arr[idx]; // transaction complete thereby cannot buy on the next day;
+		int notSellIt = solver(n,arr,0,idx+1,memo);
 
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
-					continue;
-				}
+		memo[idx][buy] = Math.max(sellit,notSellIt);
 
-				memo[i][j] = false;
-
-			}
-		}
-
-		return memo[a.length()][b.length()];
+		return memo[idx][buy];
 
 	}
 

@@ -1,64 +1,51 @@
-cdimport java.util.*;
+import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
 			
-			String a = scn.next();
-			String b = scn.next();
+			int n = scn.nextInt();
+			int arr[] = new int[n];
 
-			solve(a,b);
+			inarr(arr,scn);
+
+			solve(n,arr);
 			
 		}
 	}
 
-	public static void solve(String a, String b){
+	public static void solve(int n, int arr[]){
 
-		ps(solver(a,b)); // a is patter here 
+		ps(solver(n,arr)); 
 
 	}
 
-	public static boolean solver(String a, String b){  // a is patter here 
+	public static int solver(int n, int arr[]){
 
-		boolean memo[][] = new boolean[a.length()+1][b.length()+1];
+		int memo[][] = new int[n+2][2];
 
-		memo[0][0] = true;
+		memo[0][0] = 0; // sell state
+		memo[0][1] = IMIN/2; // buy state
 
-		// have to fill b.length() == 0 base case 
+		memo[1][0] = 0; // sell state
+		memo[1][1] = IMIN/2; // buy state
 
-		for(int i=1;i<=a.length();i++){
+		for(int i=2;i<=n+1;i++){
 
-			if(a.charAt(i-1)!='*'){
-				memo[i][0] = false;
-				continue;
-			}
+			int buyIt = memo[i-2][0]-arr[i-2];
+			int notBuyIt = memo[i-1][1];
 
-			memo[i][0] = memo[i-1][0];
+			memo[i][1] = Math.max(buyIt, notBuyIt);
+
+			int sellIt = memo[i-1][1]+arr[i-2];
+			int notSellIt = memo[i-1][0];
+
+			memo[i][0] = Math.max(sellIt, notSellIt);
 
 		}
 
-		for(int i=1;i<=a.length();i++){
-			for(int j=1;j<=b.length();j++){
-
-				if(a.charAt(i-1)==b.charAt(j-1)||a.charAt(i-1)=='?'){
-					memo[i][j] =  memo[i-1][j-1];
-					continue;
-				}
-				
-				if(a.charAt(i-1)=='*'){
-					boolean matchTillHere = memo[i-1][j];
-					boolean matchBackward = memo[i][j-1];
-					memo[i][j] =  matchTillHere||matchBackward;
-					continue;
-				}
-
-				memo[i][j] = false;
-
-			}
-		}
-
-		return memo[a.length()][b.length()];
+		return memo[n+1][0];
 
 	}
 
