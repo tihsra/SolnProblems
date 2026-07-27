@@ -15,45 +15,28 @@ public class Main{
 		}
 	}
 
-	// array represent matrix via reduced dimention method
-	// since for AxB dim A -> R1C1, dim B -> R2C2 -> C1==R2
-	// Therefore C1,R2 are trucatable 
-
-	// Thus cannot change order of the evaluation meaing cannot multipy i0 with i5
-	// only scenario where this is possible is where elements are same
-
-
-	// therefore the answer depends on what we should evaluate first
-	// strictly in the order as given in input
 
 	public static void solve(int n, int arr[]){
 
-		int memo[][] = new int[n][n];
-
-		for(int partArr[] : memo) Arrays.fill(partArr,-1);
-
-		ps(solver(n,arr,1,n-1,memo)); 
+		ps(solver(n,arr,1,n-1));
+		
 
 	}
 
-	public static int solver(int n, int arr[], int sp, int ep, int memo[][]){  
+	public static int solver(int n, int arr[], int sp, int ep){  
 
-		if(ep<=sp) return 0; 
-
-		if(memo[sp][ep]!=-1) return memo[sp][ep];
+		if(sp>=ep) return 0;
 
 		int ans = IMAX;
-		
+
 		for(int i=sp;i<ep;i++){
 			
-			int thisAnswer = solver(n,arr,sp,i,memo) + solver(n,arr,i+1,ep,memo) + arr[sp-1]*arr[i]*arr[ep];
-			ans = Math.min(ans,thisAnswer);
+			int temp = solver(n,arr,sp,i) + solver(n,arr,i+1,ep) + arr[sp-1]*arr[i]*arr[ep];
+			ans = Math.min(ans ,temp);
 
 		}
 
-		memo[sp][ep] = ans;
-
-		return memo[sp][ep];
+		return ans;
 
 	}
 

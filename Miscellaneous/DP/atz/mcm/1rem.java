@@ -18,39 +18,33 @@ public class Main{
 
 	public static void solve(int n, int arr[]){
 
-		int pad[] = new int[n+2];
+		int memo[][] = new int[n][n];
 
-		for(int i=1;i<=n;i++) pad[i] = arr[i-1];
+		for(int subArr[] : memo) Arrays.fill(subArr,-1);
 
-		pad[0]=1;
-		pad[n+1] = 1;
-
-		ps(solver(n,pad));
+		ps(solver(n,arr,1,n-1,memo));
+		
 
 	}
 
-	public static int solver(int n, int arr[]){  
+	public static int solver(int n, int arr[], int sp, int ep, int memo[][]){  
 
-		int memo[][] = new int[n+2][n+2];
+		if(sp>=ep) return 0;
 
+		if(memo[sp][ep]!=-1) return memo[sp][ep];
 
-		for(int diff=0;diff<=n-1;diff++){
-			for(int sp=1;sp+diff<=n;sp++){
-				int ep = sp+diff;
+		int ans = IMAX;
 
-				int ans = IMIN;
+		for(int i=sp;i<ep;i++){
+			
+			int temp = solver(n,arr,sp,i,memo) + solver(n,arr,i+1,ep,memo) + arr[sp-1]*arr[i]*arr[ep];
+			ans = Math.min(ans ,temp);
 
-				for(int i=sp;i<=ep;i++){
-					int temp = memo[sp][i-1]+memo[i+1][ep];
-					int cost = arr[sp-1]*arr[i]*arr[ep+1];
-					ans = Math.max(ans,temp+cost);
-				}
-
-				memo[sp][ep] = ans;
-			}
 		}
+		
+		memo[sp][ep] = ans;
 
-		return memo[1][n];
+		return memo[sp][ep];
 
 	}
 

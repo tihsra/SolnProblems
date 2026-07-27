@@ -18,39 +18,40 @@ public class Main{
 
 	public static void solve(int n, int arr[]){
 
-		int pad[] = new int[n+2];
+		int memo[][] = new int[n][n];
 
-		for(int i=1;i<=n;i++) pad[i] = arr[i-1];
+		for(int subArr[] : memo) Arrays.fill(subArr,-1);
 
-		pad[0]=1;
-		pad[n+1] = 1;
-
-		ps(solver(n,pad));
+		ps(solver(n,arr,0,n-1,memo));
 
 	}
 
-	public static int solver(int n, int arr[]){  
+	public static int solver(int n, int arr[], int sp, int ep, int memo[][]){  
 
-		int memo[][] = new int[n+2][n+2];
+		if(sp>ep) return 0;
+
+		if(memo[sp][ep]!=-1) return memo[sp][ep];
+
+		int ans = IMIN;
+
+		int left = (sp-1<0)?1:arr[sp-1];
+		int right = (ep+1>=n)?1:arr[ep+1];
 
 
-		for(int diff=0;diff<=n-1;diff++){
-			for(int sp=1;sp+diff<=n;sp++){
-				int ep = sp+diff;
+		for(int i=sp;i<=ep;i++){
 
-				int ans = IMIN;
+			// brst this baloon last then solve for the other remaingng ting
+			// coz if we burst now then i-1 and i+1 become adjacent 
 
-				for(int i=sp;i<=ep;i++){
-					int temp = memo[sp][i-1]+memo[i+1][ep];
-					int cost = arr[sp-1]*arr[i]*arr[ep+1];
-					ans = Math.max(ans,temp+cost);
-				}
+			int temp = solver(n,arr,sp,i-1,memo) + solver(n,arr,i+1,ep,memo);
+			int cost = left*arr[i]*right;
 
-				memo[sp][ep] = ans;
-			}
+			ans = Math.max(ans,temp+cost);
 		}
 
-		return memo[1][n];
+		memo[sp][ep] = ans;
+
+		return memo[sp][ep];
 
 	}
 

@@ -18,39 +18,27 @@ public class Main{
 
 	public static void solve(int n, int arr[]){
 
-		int pad[] = new int[n+2];
-
-		for(int i=1;i<=n;i++) pad[i] = arr[i-1];
-
-		pad[0]=1;
-		pad[n+1] = 1;
-
-		ps(solver(n,pad));
+		ps(solver(n,arr));
 
 	}
 
 	public static int solver(int n, int arr[]){  
 
-		int memo[][] = new int[n+2][n+2];
+		int memo[][] = new int[n][n];
 
-
-		for(int diff=0;diff<=n-1;diff++){
-			for(int sp=1;sp+diff<=n;sp++){
-				int ep = sp+diff;
-
-				int ans = IMIN;
-
-				for(int i=sp;i<=ep;i++){
-					int temp = memo[sp][i-1]+memo[i+1][ep];
-					int cost = arr[sp-1]*arr[i]*arr[ep+1];
-					ans = Math.max(ans,temp+cost);
+		for(int diff=1;diff<n-1;diff++){
+			for(int sp=1;sp+diff<n;sp++){
+				int ep = diff+sp;
+				int ans = IMAX;
+				for(int part=sp;part<ep;part++){
+					int temp = memo[sp][part] + memo[part+1][ep] + arr[sp-1]*arr[part]*arr[ep];
+					ans = Math.min(ans,temp);
 				}
-
 				memo[sp][ep] = ans;
 			}
 		}
 
-		return memo[1][n];
+		return memo[1][n-1];
 
 	}
 
