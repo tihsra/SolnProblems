@@ -5,23 +5,36 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 
-			long n = scn.nextLong();
+			int n = scn.nextInt();
 
-			long k = scn.nextLong();
+			int arr[] = new int[n];
 
-			long ans = n;
+			inarr(arr,scn);
 
-			for(long i=1;(i*i<=n);i++){
+			boolean isIt[] = new boolean[n];
 
-				if(i>k) break;
+			int pre[] = new int[n];
 
-				if(n%i==0){
+			for(int i=0;i<n;i++){
+				if(arr[i]<(i+1)) isIt[i] = true;
+			}
 
-					ans = Math.min(ans,n/i);
-					
-					long rec = n/i;
+			pre[0] = (isIt[0])?1:0;
 
-					if(rec<=k) ans = Math.min(ans,n/rec);
+			for(int i=1;i<n;i++){
+
+				pre[i] = pre[i-1]; 
+				if(isIt[i]) pre[i]++;
+
+			}
+
+			long ans = 0L;
+
+			for(int i=n-1;i>=0;i--){
+
+				if(isIt[i]){
+
+					ans += (arr[i]-2>=0)?pre[arr[i]-2]:0;
 
 				}
 			}

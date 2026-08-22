@@ -5,28 +5,21 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 
-			long n = scn.nextLong();
+			int n = scn.nextInt();
 
-			long k = scn.nextLong();
+			int max = 1; // largest factor;
 
-			long ans = n;
-
-			for(long i=1;(i*i<=n);i++){
-
-				if(i>k) break;
+			for(int i=2;i*i<=n;i++){
 
 				if(n%i==0){
-
-					ans = Math.min(ans,n/i);
-					
-					long rec = n/i;
-
-					if(rec<=k) ans = Math.min(ans,n/rec);
-
+					max = Math.max(max,n/i);
+					max = Math.max(max,i);
 				}
+
 			}
 
-			ps(ans);
+			ps((1*max)+" "+((n/max)-1)*max);
+			 
 
 		}
 	}

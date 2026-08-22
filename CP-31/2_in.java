@@ -6,31 +6,52 @@ public class Main{
 		while(t-->0){
 			
 			int n = scn.nextInt();
-			
-			int count[] = new int[31];
-			
-			for(int i=0;i<n;i++){
-				int num = scn.nextInt();
-				for(int j=0;j<=30;j++){
-					if((num&(1<<j))!=0) count[j]++;
+
+			int arr[] = new int[n];
+
+			inarr(arr,scn);
+
+			int parent[] = new int[n];
+
+			parent[0] = 0;
+
+			for(int i=1;i<n;i++){
+
+				if(arr[i]!=arr[i-1]){
+					
+					parent[i] = i-1;
+					
 				}
+				else parent[i] = parent[i-1];
+
 			}
-			
-			for(int i=1;i<=n;i++){
-				boolean tf = true;
-				for(int j=0;j<=30;j++){
-					if(count[j]%i!=0){
-						tf = false;
-						break;
-					}
-				}
-				if(tf) pns(i+" ");
-			}
-			
+
+			ps("````````````````````");
+
+			for(int i:parent) pns(i+" ");
+
 			ps("");
+
+			int q = scn.nextInt();
+
+
+			while(q-->0){
+				
+				int l = scn.nextInt()-1;
+
+				int r = scn.nextInt()-1;
+
+				if(parent[r]>=l){
+
+					if(parent[r]!=)
+
+				}
+
+			}
 			
 		}
 	}
+	
 	static int MOD = 1000000007;
 	static int IMAX = Integer.MAX_VALUE;
 	static long LMAX = Long.MAX_VALUE;
@@ -58,7 +79,7 @@ public class Main{
 			this.y = y;
 		}
 		public int compareTo(Pair o){
-			return Integer.compare(this.x, o.x);
+			return this.x-o.x;
 		}
 	}
 	static class Tuple implements Comparable<Tuple>{

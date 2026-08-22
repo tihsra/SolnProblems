@@ -4,29 +4,51 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
+			
+			String str = scn.next();
 
-			long n = scn.nextLong();
+			char prev = str.charAt(0);
 
-			long k = scn.nextLong();
+			int rem = 0;
 
-			long ans = n;
+			int count = 0;
 
-			for(long i=1;(i*i<=n);i++){
+			int i=1;
 
-				if(i>k) break;
+			while(i<str.length()&&str.charAt(i)==prev){
 
-				if(n%i==0){
+				rem++;
+				i++;
 
-					ans = Math.min(ans,n/i);
-					
-					long rec = n/i;
+			}
+			
+			if(rem>0) count+= (rem+1);
 
-					if(rec<=k) ans = Math.min(ans,n/rec);
+			
+
+			while(i<str.length()){
+
+				int curr = 1;
+
+				int j = i;
+
+				while(j<str.length()&&str.charAt(j)==prev){
+
+					curr++;
+					rem++;
+					j++;
 
 				}
+
+				if(curr>1) count+=curr;
+
+				prev = str.charAt(i);
+
+				i = j;
+
 			}
 
-			ps(ans);
+			ps(rem+" "+factorial(count));
 
 		}
 	}

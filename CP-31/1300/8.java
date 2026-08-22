@@ -5,28 +5,32 @@ public class Main{
 		int t = scn.nextInt();
 		while(t-->0){
 
-			long n = scn.nextLong();
+			int n = scn.nextInt();
 
-			long k = scn.nextLong();
+			int arr[] = new int[n];
 
-			long ans = n;
+			inarr(arr,scn);
 
-			for(long i=1;(i*i<=n);i++){
+			int i = 0;
 
-				if(i>k) break;
+			int j = 0;
 
-				if(n%i==0){
+			int len = 1;
 
-					ans = Math.min(ans,n/i);
-					
-					long rec = n/i;
+			while(j<n){
 
-					if(rec<=k) ans = Math.min(ans,n/rec);
-
+				if(arr[i]<len){
+					i++;
+					len--;
 				}
+
+				pns(len+" ");
+				j++;
+				len++;
+
 			}
 
-			ps(ans);
+			ps("");
 
 		}
 	}
