@@ -2,54 +2,48 @@ import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
-		int t = scn.nextInt();
+		int t = 1;
 		while(t-->0){
 
 			int n = scn.nextInt();
 
-			long arr[] = new long[n];
-			
-			lnarr(arr,scn);
+			int gotIn[] = new int[n];
 
-			long sum = 0L;
+			inarr(gotIn,scn);
+
+			int gotOut[] = new int[n];
+
+			inarr(gotOut,scn);
+
+			HashMap<Integer,Integer> mapping = new HashMap<>();
 
 			for(int i=0;i<n;i++){
-				sum+=arr[i];
+				mapping.put(gotIn[i],i);
 			}
 
-			long leavingFirst = kadane(arr,0,n-1);
-			long leavingSecond = kadane(arr,1,n);
+			int ans = 0;
 
-			/*
+			boolean isOverTakenCarAvailable = false;
 
-			stubb testing 
-			ps(sum);
-			ps(leavingFirst);
-			ps(leavingSecond);
 
-			*/
+			for(int i=0;i<n;i++){
 
-			if(sum>leavingFirst&&sum>leavingSecond) ps("YES");
-			else ps("NO");
+				int diff = mapping.get(gotOut[i]);
+				diff = i - diff;
 
-		}
-	}
+				if(diff<0){
+					isOverTakenCarAvailable = true;
+					ans++;
+				}
+				else if(diff==0){
+					if(isOverTakenCarAvailable) ans++;
+				}
 
-	static long kadane(long arr[], int sp, int ep){
-
-		long ans = LMIN;
-		long curr = 0;
-
-		for(int i=sp;i<ep;i++){
-			if(curr<0){
-				curr=0;
 			}
-			curr+=arr[i];
-			ans = Math.max(curr,ans);
+
+			ps(ans);
+
 		}
-
-		return ans;
-
 	}
 	
 	static int MOD = 1000000007;

@@ -2,54 +2,39 @@ import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
-		int t = scn.nextInt();
+		int t = 1;
 		while(t-->0){
 
 			int n = scn.nextInt();
 
+			int k = scn.nextInt();
+
 			long arr[] = new long[n];
-			
+
 			lnarr(arr,scn);
 
+			int sp = 0;
+			int ep = 0;
+
 			long sum = 0L;
+			long curr = 0L;
+			
+			while(ep<k){
 
-			for(int i=0;i<n;i++){
-				sum+=arr[i];
+				curr+=arr[ep++];
 			}
 
-			long leavingFirst = kadane(arr,0,n-1);
-			long leavingSecond = kadane(arr,1,n);
+			sum+=curr;
 
-			/*
+			while(ep<n){
 
-			stubb testing 
-			ps(sum);
-			ps(leavingFirst);
-			ps(leavingSecond);
+				curr = curr + arr[ep++] - arr[sp++];
+				sum += curr;
 
-			*/
-
-			if(sum>leavingFirst&&sum>leavingSecond) ps("YES");
-			else ps("NO");
-
-		}
-	}
-
-	static long kadane(long arr[], int sp, int ep){
-
-		long ans = LMIN;
-		long curr = 0;
-
-		for(int i=sp;i<ep;i++){
-			if(curr<0){
-				curr=0;
 			}
-			curr+=arr[i];
-			ans = Math.max(curr,ans);
+
+			ps((double)sum/(n-k+1));
 		}
-
-		return ans;
-
 	}
 	
 	static int MOD = 1000000007;

@@ -2,54 +2,72 @@ import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
-		int t = scn.nextInt();
+		int t = 1;
 		while(t-->0){
 
 			int n = scn.nextInt();
 
 			long arr[] = new long[n];
-			
+
 			lnarr(arr,scn);
 
 			long sum = 0L;
 
+			long max = IMIN;
+
+			int occ = 0;
+
 			for(int i=0;i<n;i++){
-				sum+=arr[i];
+
+				sum += arr[i];
+
+				if(arr[i]>max){
+
+					max = arr[i];
+					occ = 1;
+				}
+
+				else if(arr[i]==max) occ++;
+
 			}
 
-			long leavingFirst = kadane(arr,0,n-1);
-			long leavingSecond = kadane(arr,1,n);
+			long temp = sum - 2*max;
 
-			/*
+			HashSet<Integer> hs = new HashSet<>();
 
-			stubb testing 
-			ps(sum);
-			ps(leavingFirst);
-			ps(leavingSecond);
+			for(int i=0;i<n;i++){
 
-			*/
+				if(temp==max&&occ==1){
+					break;
+				}
 
-			if(sum>leavingFirst&&sum>leavingSecond) ps("YES");
-			else ps("NO");
+				if(arr[i]==temp) hs.add(i+1);
 
-		}
-	}
-
-	static long kadane(long arr[], int sp, int ep){
-
-		long ans = LMIN;
-		long curr = 0;
-
-		for(int i=sp;i<ep;i++){
-			if(curr<0){
-				curr=0;
 			}
-			curr+=arr[i];
-			ans = Math.max(curr,ans);
+
+			sum = sum-max;
+
+			long secMax = IMIN;
+
+			for(int i=0;i<n;i++){
+				if(arr[i]<max) secMax = Math.max(secMax,arr[i]);
+			}
+			
+			sum = sum - secMax;
+
+			if(sum==secMax){
+
+				for(int i=0;i<n;i++) if(arr[i]==max) hs.add(i+1);
+
+			}
+
+			ps(hs.size());
+
+			for(int i : hs) pns(i+" ");
+
+			ps("");
+
 		}
-
-		return ans;
-
 	}
 	
 	static int MOD = 1000000007;

@@ -7,49 +7,33 @@ public class Main{
 
 			int n = scn.nextInt();
 
-			long arr[] = new long[n];
+			int a = -1,b = -1;
+
+			int temp = n;
+
+			for(int i=2;i*i<=temp;i++){
+				if(temp%i==0){
+
+					if(a==-1){
+						a = i;
+						temp=temp/i;
+					}
+					else if(b==-1){
+						b = i;
+						temp=temp/i;
+						break;
+					}
+				}
+			}
+
+			if(a==-1||b==-1||temp==a||temp==b) ps("NO");
+			else{
+				ps("YES");
+				ps(a+" "+b+" "+temp);
+			}
 			
-			lnarr(arr,scn);
-
-			long sum = 0L;
-
-			for(int i=0;i<n;i++){
-				sum+=arr[i];
-			}
-
-			long leavingFirst = kadane(arr,0,n-1);
-			long leavingSecond = kadane(arr,1,n);
-
-			/*
-
-			stubb testing 
-			ps(sum);
-			ps(leavingFirst);
-			ps(leavingSecond);
-
-			*/
-
-			if(sum>leavingFirst&&sum>leavingSecond) ps("YES");
-			else ps("NO");
 
 		}
-	}
-
-	static long kadane(long arr[], int sp, int ep){
-
-		long ans = LMIN;
-		long curr = 0;
-
-		for(int i=sp;i<ep;i++){
-			if(curr<0){
-				curr=0;
-			}
-			curr+=arr[i];
-			ans = Math.max(curr,ans);
-		}
-
-		return ans;
-
 	}
 	
 	static int MOD = 1000000007;

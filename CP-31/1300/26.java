@@ -2,54 +2,72 @@ import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
-		int t = scn.nextInt();
+		int t = 1;
 		while(t-->0){
 
-			int n = scn.nextInt();
+			String str = scn.next();
 
-			long arr[] = new long[n];
+			int n = str.length();
+
+			long pre[] = new long[n];
+
+			long suf[] = new long[n];
+
+			int i = 0;
+
+			while(i<n){
+
+				if(str.charAt(i)=='v'){
+					
+					long add = 0;
+					long curr = (i==0)?0L:pre[i-1];
+					while(i<n&&str.charAt(i)=='v'){
+						pre[i] = curr + add;
+						add++;
+						i++;
+					}
+
+				}
+				else{
+
+					pre[i] = (i==0)?0L:pre[i-1];
+					i++;
+				}
+
+			}
+
+			i = n-1;
+
+			while(i>=0){
+
+				if(str.charAt(i)=='v'){
+					
+					long add = 0;
+					long curr = (i==n-1)?0L:suf[i+1];
+					while(i>=0&&str.charAt(i)=='v'){
+						suf[i] = curr + add;
+						add++;
+						i--;
+					}
+
+				}
+				else{
+
+					suf[i] = (i==n-1)?0:suf[i+1];
+					i--;
+				}
+
+			}
+
+			long ans = 0L;
+
+			for(i=0;i<n;i++){
+				if(str.charAt(i)=='o') ans += pre[i]*suf[i];
+			}
+
+			ps(ans);
 			
-			lnarr(arr,scn);
-
-			long sum = 0L;
-
-			for(int i=0;i<n;i++){
-				sum+=arr[i];
-			}
-
-			long leavingFirst = kadane(arr,0,n-1);
-			long leavingSecond = kadane(arr,1,n);
-
-			/*
-
-			stubb testing 
-			ps(sum);
-			ps(leavingFirst);
-			ps(leavingSecond);
-
-			*/
-
-			if(sum>leavingFirst&&sum>leavingSecond) ps("YES");
-			else ps("NO");
-
 		}
-	}
-
-	static long kadane(long arr[], int sp, int ep){
-
-		long ans = LMIN;
-		long curr = 0;
-
-		for(int i=sp;i<ep;i++){
-			if(curr<0){
-				curr=0;
-			}
-			curr+=arr[i];
-			ans = Math.max(curr,ans);
-		}
-
-		return ans;
-
 	}
 	
 	static int MOD = 1000000007;

@@ -2,54 +2,42 @@ import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
-		int t = scn.nextInt();
+		int t = 1;
 		while(t-->0){
 
-			int n = scn.nextInt();
+			String str = scn.next();
 
-			long arr[] = new long[n];
+			int n = str.length();
+
+			char arr[] = str.toCharArray();
+
+			int ans = 0;
+
+			for(int i=1;i<n;i++){
+				
+				if(arr[i]==arr[i-1]){
+
+					for(char a='a';a<='z';a++){
+
+						arr[i] = a;
+
+						if(arr[i]==arr[i-1]) continue;
+
+						if(i+1>=n) break;
+
+						if(arr[i]!=arr[i+1]) break;
+					}
+
+				}
+
+			}
+
+
+
+			ps(new String(arr));
 			
-			lnarr(arr,scn);
-
-			long sum = 0L;
-
-			for(int i=0;i<n;i++){
-				sum+=arr[i];
-			}
-
-			long leavingFirst = kadane(arr,0,n-1);
-			long leavingSecond = kadane(arr,1,n);
-
-			/*
-
-			stubb testing 
-			ps(sum);
-			ps(leavingFirst);
-			ps(leavingSecond);
-
-			*/
-
-			if(sum>leavingFirst&&sum>leavingSecond) ps("YES");
-			else ps("NO");
 
 		}
-	}
-
-	static long kadane(long arr[], int sp, int ep){
-
-		long ans = LMIN;
-		long curr = 0;
-
-		for(int i=sp;i<ep;i++){
-			if(curr<0){
-				curr=0;
-			}
-			curr+=arr[i];
-			ans = Math.max(curr,ans);
-		}
-
-		return ans;
-
 	}
 	
 	static int MOD = 1000000007;
