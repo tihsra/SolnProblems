@@ -9,46 +9,61 @@ public class Main{
 
 			char prev = str.charAt(0);
 
-			int rem = 0;
-
-			int count = 0;
+			ArrayList<Integer> arr = new ArrayList<>();
 
 			int i=1;
 
+			int size = 1;
+
 			while(i<str.length()&&str.charAt(i)==prev){
 
-				rem++;
+				size++;
 				i++;
 
 			}
-			
-			if(rem>0) count+= (rem+1);
 
-			
 
+
+			if(size>1) arr.add(size);
+		
 			while(i<str.length()){
 
-				int curr = 1;
+				prev = str.charAt(i);
 
-				int j = i;
+				int j = i+1;
+
+				size = 1;
 
 				while(j<str.length()&&str.charAt(j)==prev){
 
-					curr++;
-					rem++;
+					size++;
 					j++;
 
 				}
 
-				if(curr>1) count+=curr;
-
-				prev = str.charAt(i);
+				if(size>1) arr.add(size);
 
 				i = j;
 
 			}
 
-			ps(rem+" "+factorial(count));
+			long rem = 0L;
+
+			long ways = 1L;
+
+
+			for( i=0;i<arr.size();i++){
+
+				rem+=(arr.get(i)-1);
+
+				ways=(ways*arr.get(i))%MOD_C;
+
+
+			}
+
+			ways = (ways*factorial(rem))%MOD_C;
+
+			ps(rem+" "+ways);
 
 		}
 	}

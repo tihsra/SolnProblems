@@ -4,52 +4,68 @@ public class Main{
 		Scanner scn = new Scanner(System.in);
 		int t = scn.nextInt();
 		while(t-->0){
-
-			int n = scn.nextInt();
-
-			long arr[] = new long[n];
 			
-			lnarr(arr,scn);
+			String str = scn.next();
 
-			long sum = 0L;
+			char prev = str.charAt(0);
 
-			for(int i=0;i<n;i++){
-				sum+=arr[i];
+			ArrayList<Integer> arr = new ArrayList<>();
+
+			int i=1;
+
+			int size = 1;
+
+			while(i<str.length()&&str.charAt(i)==prev){
+
+				size++;
+				i++;
+
 			}
 
-			long leavingFirst = kadane(arr,0,n-1);
-			long leavingSecond = kadane(arr,1,n);
 
-			/*
 
-			stubb testing 
-			ps(sum);
-			ps(leavingFirst);
-			ps(leavingSecond);
+			if(size>1) arr.add(size);
+		
+			while(i<str.length()){
 
-			*/
+				prev = str.charAt(i);
 
-			if(sum>leavingFirst&&sum>leavingSecond) ps("YES");
-			else ps("NO");
+				int j = i+1;
 
-		}
-	}
+				size = 1;
 
-	static long kadane(long arr[], int sp, int ep){
+				while(j<str.length()&&str.charAt(j)==prev){
 
-		long ans = LMIN;
-		long curr = 0;
+					size++;
+					j++;
 
-		for(int i=sp;i<ep;i++){
-			if(curr<0){
-				curr=0;
+				}
+
+				if(size>1) arr.add(size);
+
+				i = j;
+
 			}
-			curr+=arr[i];
-			ans = Math.max(curr,ans);
+
+			long rem = 0L;
+
+			long ways = 1L;
+
+
+			for( i=0;i<arr.size();i++){
+
+				rem+=(arr.get(i)-1);
+
+				ways=(ways*arr.get(i))%MOD_C;
+
+
+			}
+
+			ways = (ways*factorial(rem))%MOD_C;
+
+			ps(rem+" "+ways);
+
 		}
-
-		return ans;
-
 	}
 	
 	static int MOD = 1000000007;
