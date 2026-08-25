@@ -1,75 +1,19 @@
 import java.util.*;
 public class Main{
+
 	public static void main(String[] args){
+
 		Scanner scn = new Scanner(System.in);
+
 		int t = scn.nextInt();
+
 		while(t-->0){
 			
-			String str = scn.next();
-
-			char prev = str.charAt(0);
-
-			ArrayList<Integer> arr = new ArrayList<>();
-
-			int i=1;
-
-			int size = 1;
-
-			while(i<str.length()&&str.charAt(i)==prev){
-
-				size++;
-				i++;
-
-			}
-
-
-
-			if(size>1) arr.add(size);
-		
-			while(i<str.length()){
-
-				prev = str.charAt(i);
-
-				int j = i+1;
-
-				size = 1;
-
-				while(j<str.length()&&str.charAt(j)==prev){
-
-					size++;
-					j++;
-
-				}
-
-				if(size>1) arr.add(size);
-
-				i = j;
-
-			}
-
-			long rem = 0L;
-
-			long ways = 1L;
-
-
-			for( i=0;i<arr.size();i++){
-
-				rem+=(arr.get(i)-1);
-
-				ways=(ways*arr.get(i))%MOD_C;
-
-
-			}
-
-			ways = (ways*factorial(rem))%MOD_C;
-
-			ps(rem+" "+ways);
-
 		}
+		
 	}
 	
 	static int MOD = 1000000007;
-	static int MOD_C = 998244353;
 	static int IMAX = Integer.MAX_VALUE;
 	static long LMAX = Long.MAX_VALUE;
 	static int IMIN = Integer.MIN_VALUE;
@@ -136,6 +80,5 @@ public class Main{
 		while(i<=m)t[k++]=a[i++];
 		while(j<=r)t[k++]=a[j++];
 		for(i=l;i<=r;i++)a[i]=t[i];
-	}
-	static long factorial(long n){if(n==1||n==0)return 1L;return ((n%MOD_C)*(factorial(n-1)%MOD_C))%MOD_C;}
+}
 }

@@ -21,25 +21,19 @@ public class Main{
 				mapping.put(gotIn[i],i);
 			}
 
+			for(int i=0;i<n;i++){
+				gotOut[i] = mapping.get(gotOut[i]);
+			}
+
+			int sufMin[] = new int[n];
+
+			sufMin[n-1] = gotOut[n-1];
+
 			int ans = 0;
 
-			boolean isOverTakenCarAvailable = false;
+			for(int i=n-2;i>=0;i--) sufMin[i] = Math.min(gotOut[i],sufMin[i+1]) ;
 
-
-			for(int i=0;i<n;i++){
-
-				int diff = mapping.get(gotOut[i]);
-				diff = i - diff;
-
-				if(diff<0){
-					isOverTakenCarAvailable = true;
-					ans++;
-				}
-				else if(diff==0){
-					if(isOverTakenCarAvailable) ans++;
-				}
-
-			}
+			for(int i=0;i<n;i++) if(gotOut[i]>sufMin[i]) ans++;
 
 			ps(ans);
 

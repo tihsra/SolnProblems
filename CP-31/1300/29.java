@@ -2,60 +2,46 @@ import java.util.*;
 public class Main{
 	public static void main(String[] args){
 		Scanner scn = new Scanner(System.in);
-		int t = scn.nextInt();
+		int t = 1;
 		while(t-->0){
-			
-			int n = scn.nextInt();
-			long x = scn.nextLong();
-			long y = scn.nextLong();
-			
-			long xarr[] = new long[n];
-			long yarr[] = new long[n];
-			
-			HashMap<String,Long> xm = new HashMap<>();
-			
-			for(int i=0;i<n;i++){
-				
-				long temp = scn.nextLong();
-				
-				xarr[i] = temp%x;
-				yarr[i] = temp%y;
-				
-				String ky = (xarr[i]+","+yarr[i]);
-				//ps(ky);
-				
-				long xtemp = xm.getOrDefault(ky,0L)+1;
-				
-				xm.put(ky,xtemp);
-			}
-			
-			long ans = 0;
-			
-			for(String key : xm.keySet()){
-				
-				String answr[] = key.split(",");
-				
-				long xx = x-Long.parseLong(answr[0]);
-				String xxx = xx+","+answr[1];
-				
-				long count = xm.getOrDefault((xx+","+answr[1]),0L);
-				
-				if(xxx.equals(key)){
-					if(xm.get(key)>1) ans+=(xm.get(key)+1)/2;
-				}
-				else{
-					ans+=(xm.get(key)*count)/2;
-				}
-			}
-			
-			ps("``````````````````````````````````");
 
-			ps(ans);
+			int n = scn.nextInt();
+
+			int gotIn[] = new int[n];
+
+			inarr(gotIn,scn);
+
+			int gotOut[] = new int[n];
+
+			inarr(gotOut,scn);
+
+			HashMap<Integer,Integer> mapping = new HashMap<>();
+
+			for(int i=0;i<n;i++){
+				mapping.put(gotIn[i],i);
+			}
+
+			for(int i=0;i<n;i++){
+				gotOut[i] = hm.get(gotOut[i]);
+			}
+
+			int sufMin[] = new int[n];
+
+			sufMin[n-1] = gotOut[n-1];
+
+			int ans = 0;
+
+			for(int i=n-2;i>=0;i--) sufMin[i] = Math.min(gotOut[i],sufMin[i-1]) ;
+
+			for(int i=0;i<n;i++) if(gotOut[i]>sufMin[i]) ans++;
 			
+			ps(ans);
+
 		}
 	}
 	
 	static int MOD = 1000000007;
+	static int MOD_C = 998244353;
 	static int IMAX = Integer.MAX_VALUE;
 	static long LMAX = Long.MAX_VALUE;
 	static int IMIN = Integer.MIN_VALUE;
@@ -122,5 +108,6 @@ public class Main{
 		while(i<=m)t[k++]=a[i++];
 		while(j<=r)t[k++]=a[j++];
 		for(i=l;i<=r;i++)a[i]=t[i];
-}
+	}
+	static long factorial(long n){if(n==1||n==0)return 1L;return ((n%MOD_C)*(factorial(n-1)%MOD_C))%MOD_C;}
 }

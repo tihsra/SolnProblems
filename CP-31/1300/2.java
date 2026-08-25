@@ -13,7 +13,7 @@ public class Main{
 
 			int parent[] = new int[n];
 
-			parent[0] = 0;
+			parent[0] = -1;
 
 			for(int i=1;i<n;i++){
 
@@ -26,26 +26,16 @@ public class Main{
 
 			}
 
-			ps("````````````````````");
-
-			for(int i:parent) pns(i+" ");
-
-			ps("");
-
-			int q = scn.nextInt();
-
+			int q  = scn.nextInt();
 
 			while(q-->0){
-				
+
 				int l = scn.nextInt()-1;
 
 				int r = scn.nextInt()-1;
 
-				if(parent[r]>=l){
-
-					if(parent[r]!=)
-
-				}
+				if(parent[r]>=l) ps((parent[r]+1)+" "+(r+1));
+				else ps(-1+" "+-1);
 
 			}
 			
