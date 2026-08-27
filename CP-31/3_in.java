@@ -11,63 +11,88 @@ public class Main{
 
 			int n = scn.nextInt();
 
-			int arr[] = new int[n];
+			int segment[][] = new int[n][2];
 
-			inarr(arr,scn);
+			int max = IMIN;
 
-			int prefix[][] = new int[n][32];
+			for(int i=0;i<n;i++){
 
-			for(int i=0;i<32;i++) {
-				if((arr[0]&(1<<i))!=0) prefix[0][i] = 1;
+				arr[i][0] = scn.nextInt();
+				arr[i][1] = scn.nextInt();
+
+				min = Math.min(min, arr[i][0]);
+				max = Math.max(max, arr[i][0]);
+
 			}
 
-			for(int i=1;i<n;i++){
-				for(int j=0;j<32;j++){
-					prefix[i][j] = prefix[i-1][j];
-					if((arr[i]&(1<<j))!=0) prefix[i][j]++;
-				}
-			}
+			int sp = 0;
 
-			int q = scn.nextInt();
+			int ep = max;
 
-			while(q-->0){
+			int ans = 0;
 
-				int l = scn.nextInt()-1;
+			while(sp<=ep){
 
-				int k = scn.nextInt();
+				int mid = sp + (ep-sp)/2;
 
-				int shrinkedScope = n-1;
-
-				for(int i=31;i>=0;i--){
-
-					if((k&(1<<i))!=0){
-
-						for(int j=shrinkedScope;j>=l;j--){
-
-							int cnt = prefix[j][i] - (l > 0 ? prefix[l-1][i] : 0);
-
-							if(cnt==(j-l+1)){
-								
-								shrinkedScope = j;
-								break;
-
-							}
-
-						}
-
-					}
-
+				if(stubCheck(segment,mid,n)<n){
 					
+					sp = mid+1;
+
+				}
+				else{
+
+					ep = mid-1;
+
+					ans = mid;
 
 				}
 
-				ps((shrinkedScope<l)?-1:(shrinkedScope+1));
-
 			}
+
+			ps(ans);
 
 		}
 
 		
+	}
+
+	static int stubCheck(int segment[][], int number, int n){
+
+		int sp = 0, ep = 0;
+
+		int curr = 0;
+
+		for(int i=0;i<n;i++){
+
+			if(segment[i][0]>ep){ // not reaching case
+
+
+			}
+			else{
+
+				sp = Math.max(segment[i][0],ep-n);
+				ep = Math.min(segment[i][1],ep+n);
+
+
+			}
+
+			if(segment[i][1]<sp){
+
+
+			}
+			else{
+
+				ep 
+			}
+
+
+
+
+		}
+
+		return ans;
+
 	}
 	
 	static int MOD = 1000000007;

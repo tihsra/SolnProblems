@@ -11,63 +11,80 @@ public class Main{
 
 			int n = scn.nextInt();
 
-			int arr[] = new int[n];
+			int m = scn.nextInt();
 
-			inarr(arr,scn);
+			Pair number[] = new Pair[n];
 
-			int prefix[][] = new int[n][32];
+			for(int i=0;i<n;i++){
 
-			for(int i=0;i<32;i++) {
-				if((arr[0]&(1<<i))!=0) prefix[0][i] = 1;
+				int temp = scn.nextInt();
+
+				int digitCnt = stubCntDigit(temp);
+
+				int zerosCnt = stubCntZeros(temp);
+
+				number[i] = new Pair(digitCnt,zerosCnt);
 			}
 
-			for(int i=1;i<n;i++){
-				for(int j=0;j<32;j++){
-					prefix[i][j] = prefix[i-1][j];
-					if((arr[i]&(1<<j))!=0) prefix[i][j]++;
-				}
-			}
+			
+			Arrays.sort(number);
 
-			int q = scn.nextInt();
+			int ans = 0;
 
-			while(q-->0){
+			for(int i=0;i<n;i++){
 
-				int l = scn.nextInt()-1;
+				int temp = 0;
 
-				int k = scn.nextInt();
+				if(i%2==0){
 
-				int shrinkedScope = n-1;
-
-				for(int i=31;i>=0;i--){
-
-					if((k&(1<<i))!=0){
-
-						for(int j=shrinkedScope;j>=l;j--){
-
-							int cnt = prefix[j][i] - (l > 0 ? prefix[l-1][i] : 0);
-
-							if(cnt==(j-l+1)){
-								
-								shrinkedScope = j;
-								break;
-
-							}
-
-						}
-
-					}
-
-					
+					temp += number[i].x - number[i].y;
 
 				}
 
-				ps((shrinkedScope<l)?-1:(shrinkedScope+1));
+				else{
+
+					temp += number[i].x;
+				}
+
+				ans+=temp;
 
 			}
+
+			ps((ans>m)?"Sasha":"Anna");
 
 		}
 
 		
+	}
+
+	static int stubCntDigit(int number){
+
+		int ans = 0;
+
+		while(number>0){
+
+			ans++;
+			number = number / 10;
+
+		}
+
+		return ans;
+
+	}
+
+	static int stubCntZeros(int number){
+
+		int ans = 0;
+
+		while(number>0 && number%10==0){
+
+			ans++;
+			number = number/10;
+
+		}
+
+		return ans;
+
 	}
 	
 	static int MOD = 1000000007;

@@ -11,59 +11,66 @@ public class Main{
 
 			int n = scn.nextInt();
 
-			int arr[] = new int[n];
+			int k = scn.nextInt();
 
-			inarr(arr,scn);
+			long arr[] = new long[n];
 
-			int prefix[][] = new int[n][32];
+			HashSet<Long> hs = new HashSet<>(); 
 
-			for(int i=0;i<32;i++) {
-				if((arr[0]&(1<<i))!=0) prefix[0][i] = 1;
+			lnarr(arr,scn);
+
+			for(long i : arr) hs.add(i);
+
+			if(k>2){
+
+				ps(0);
+				continue;
+
 			}
 
-			for(int i=1;i<n;i++){
-				for(int j=0;j<32;j++){
-					prefix[i][j] = prefix[i-1][j];
-					if((arr[i]&(1<<j))!=0) prefix[i][j]++;
+			long min = LMAX;
+        	long pairDiff = LMAX;
+
+        	for (int i = 0; i < n; i++){
+				min = Math.min(min, arr[i]);
+        	    for (int j = i + 1; j < n; j++){
+        	        pairDiff = Math.min(pairDiff, Math.abs(arr[i] - arr[j]));
 				}
 			}
 
-			int q = scn.nextInt();
+			if (k == 0) {
+        	    ps(min);
+        	    continue;
+        	}
 
-			while(q-->0){
+        	if (k == 1) {
+        	    ps(Math.min(min, pairDiff));
+        	    continue;
+        	}
+			
+			Arrays.sort(arr); 
 
-				int l = scn.nextInt()-1;
+			long best = LMAX;
 
-				int k = scn.nextInt();
+			for (int i = 0; i < n; i++) {
+			    for (int j = i + 1; j < n; j++) {
+			        long d = Math.abs(arr[i] - arr[j]);
+			        best = Math.min(best, d); 
 
-				int shrinkedScope = n-1;
+			        if (hs.contains(d)) { best = 0; continue; } 
 
-				for(int i=31;i>=0;i--){
-
-					if((k&(1<<i))!=0){
-
-						for(int j=shrinkedScope;j>=l;j--){
-
-							int cnt = prefix[j][i] - (l > 0 ? prefix[l-1][i] : 0);
-
-							if(cnt==(j-l+1)){
-								
-								shrinkedScope = j;
-								break;
-
-							}
-
-						}
-
-					}
-
-					
-
-				}
-
-				ps((shrinkedScope<l)?-1:(shrinkedScope+1));
-
+			        int lo = 0, hi = n - 1, pos = -1;
+			        while (lo <= hi) {
+			            int mid = (lo + hi) / 2;
+			            if (arr[mid] <= d) { pos = mid; lo = mid + 1; }
+			            else hi = mid - 1;
+			        }
+			        if (pos >= 0) best = Math.min(best, Math.abs(arr[pos] - d));
+			        if (pos + 1 < n) best = Math.min(best, Math.abs(arr[pos + 1] - d));
+			    }
 			}
+
+			ps(Math.min(min, best));
 
 		}
 
