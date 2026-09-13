@@ -9,9 +9,45 @@ public class Main{
 
 		while(t-->0){
 
-		
+			int n = scn.nextInt();
+
+			int edges[][] = new int[n][2];
+
+			for(int i=0;i<n-1;i++){
+
+				edges[i][0] = scn.nextInt()-1;
+
+				edges[i][1] = scn.nextInt()-1;
+
+			}
+
+			boolean vis[] = new boolean[n];
+
+			vis[0] = true; 
+
+			int ans = 1;
+
+			for(int i=0;i<n-1;i++){
+
+				if(vis[edges[i][0]]){
+
+					vis[edges[i][1]] =true;
+
+				}
+				else {
+					ans++;
+					vis[edges[i][0]] =true;
+					vis[edges[i][1]] =true;
+					
+					}
+
+			}
+
+			ps(ans);
+
 		}
 
+		
 	}
 	
 	static int MOD = 1000000007;
@@ -34,9 +70,9 @@ public class Main{
 		}
 	}  
 	static class Pair implements Comparable<Pair>{
-		char x;
+		int x;
 		int y;
-		Pair(char x, int y){
+		Pair(int x, int y){
 			this.x = x;
 			this.y = y;
 		}

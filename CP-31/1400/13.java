@@ -9,7 +9,50 @@ public class Main{
 
 		while(t-->0){
 
-		
+			int n = scn.nextInt();
+
+			int k = scn.nextInt();
+
+			int arr[] = new int[n];
+
+			inarr(arr,scn);
+
+			boolean isConditionValid[] = new boolean[n];
+
+			for(int i=0;i<n-1;i++) if(arr[i]<2*arr[i+1]) isConditionValid[i] = true;
+
+			int i = 0;
+			int j = 0;
+
+			int ans = 0;
+			int count = 0;
+
+			while(j<k){
+
+				if(isConditionValid[j]) count++;
+
+				j++;
+
+			}
+
+			if(count==k) ans++;
+
+
+			while(j<n){
+
+				if (isConditionValid[i]) count--;
+
+				i++;
+
+				if(isConditionValid[j]) count++;
+
+				j++;
+
+				if(count==k) ans++;
+			}
+
+			ps(ans);
+
 		}
 
 	}

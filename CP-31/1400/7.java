@@ -9,8 +9,96 @@ public class Main{
 
 		while(t-->0){
 
-		
+			int n = scn.nextInt();
+
+			String str = scn.next();
+
+			int ans[] = new int[n];
+			
+			Arrays.fill(ans,2);
+
+			boolean reversedString = checkRegular(new StringBuilder(str).reverse().toString(), n, ans);
+
+			if(reversedString){
+
+				ps(1);
+
+				for(int i=0;i<n;i++) pns(1+" ");
+
+				ps("");
+
+				continue;
+			}
+
+			Arrays.fill(ans,2);
+
+			boolean regularString = checkRegular(str,n,ans);
+
+			if(regularString){
+
+				ps(1);
+
+				for(int i=0;i<n;i++) pns(1+" ");
+
+				ps("");
+
+				continue;
+			}
+
+			StringBuilder modifiedString = new StringBuilder();
+
+			for(int i=0;i<n;i++) if(ans[i]==2) modifiedString.append(str.charAt(i));
+
+			int[] tmp = new int[modifiedString.length()];
+
+			boolean regularModifiedString = checkRegular(modifiedString.toString(),modifiedString.length(),tmp);
+
+			boolean regularReversedModifiedString = checkRegular(modifiedString.reverse().toString(),modifiedString.length(),tmp);
+
+			if(regularModifiedString || regularReversedModifiedString){
+
+				ps(2);
+				for(int i=0;i<n;i++) pns(ans[i]+" ");
+				ps("");
+				continue;
+
+			}
+
+			ps(-1);
+
+
+
+
+
+
 		}
+
+	}
+
+	static boolean checkRegular(String str, int n, int ans[]){
+
+		Stack<Pair> st = new Stack<>();
+
+		for(int i=0;i<n;i++){
+
+				char next = str.charAt(i);
+
+				if(st.size()>0&&st.peek().x=='('&&next==')'){
+
+					ans[i] = 1;
+					ans[st.peek().y] = 1;
+					st.pop();
+					continue;
+
+				}
+
+				st.push(new Pair(next,i));
+
+			}
+
+			if(st.size()==0) return true;
+
+			return false;
 
 	}
 	

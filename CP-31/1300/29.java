@@ -1,43 +1,76 @@
 import java.util.*;
 public class Main{
+
+	static int color_1;
+	static int color_2; 
+
 	public static void main(String[] args){
+
 		Scanner scn = new Scanner(System.in);
+
 		int t = 1;
+
 		while(t-->0){
-
-			int n = scn.nextInt();
-
-			int gotIn[] = new int[n];
-
-			inarr(gotIn,scn);
-
-			int gotOut[] = new int[n];
-
-			inarr(gotOut,scn);
-
-			HashMap<Integer,Integer> mapping = new HashMap<>();
-
-			for(int i=0;i<n;i++){
-				mapping.put(gotIn[i],i);
-			}
-
-			for(int i=0;i<n;i++){
-				gotOut[i] = hm.get(gotOut[i]);
-			}
-
-			int sufMin[] = new int[n];
-
-			sufMin[n-1] = gotOut[n-1];
-
-			int ans = 0;
-
-			for(int i=n-2;i>=0;i--) sufMin[i] = Math.min(gotOut[i],sufMin[i-1]) ;
-
-			for(int i=0;i<n;i++) if(gotOut[i]>sufMin[i]) ans++;
 			
-			ps(ans);
+			int e = scn.nextInt();
+
+			color_1 = 0;
+
+			color_2 = 0;
+
+			ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+
+			for(int i=0;i<e;i++) graph.add(new ArrayList<Integer>());
+
+			for(int i=0;i<e-1;i++){
+
+				int u = scn.nextInt() - 1;
+
+				int v = scn.nextInt() - 1;
+
+				graph.get(u).add(v);
+				
+				graph.get(v).add(u);
+
+			}
+
+			boolean vis[] = new boolean[e];
+
+			vis[0] = true;
+
+			dfs(graph,vis,0,0);
+
+			ps((1L*color_1*color_2)-(e-1));
 
 		}
+	}
+
+	public static void dfs(ArrayList<ArrayList<Integer>> graph, boolean vis[], int color, int parent){
+
+		if(color==1){
+
+			color_2++;
+
+		}
+		if(color==0){
+
+			color_1++;
+
+		}
+
+		ArrayList<Integer> arr = graph.get(parent);
+
+		for(int i : arr){
+
+			if(!vis[i]){
+
+				vis[i] = true;
+
+				dfs(graph,vis,1-color,i);
+
+			}
+		}
+
 	}
 	
 	static int MOD = 1000000007;
