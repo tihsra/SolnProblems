@@ -12,34 +12,65 @@ public class Main{
 
 			int n = scn.nextInt();
 
-			HashSet<Long> hs = new HashSet<>();
+			String str = scn.next();
 
-			for(int i=0;i<n;i++){
-				int x = scn.nextInt();
-				hs.add((long)x-(i+1));
-			}
+			char start = str.charAt(0);
 
 			int ans = 0;
 
-			for(long x:hs){
+			if(start=='1'){
 
-				if(!hs.contains(x-1)){
+				for(int i=1;i<n;i++) if(str.charAt(i)=='0') ans++;
 
-					int cur = 1;
-					long y = x;
+			}
+			else{
+				
+				int p = -1;
 
-					while(hs.contains(y+1)){
-						y++;
-						cur++;
+				for (int i=0;i<n;i++){
+					if (str.charAt(i)=='1'){
+						p = i;
+						break;
+					}
+				}
+
+				if (p==-1){
+					ans=0; 
+				}
+				else{
+
+					int onesPrefix[] = new int[n+1];
+
+					for (int i=0;i<n;i++) {
+						onesPrefix[i+1] = onesPrefix[i] + (str.charAt(i)=='1'?1:0);
 					}
 
-					ans = Math.max(ans,cur);
+					int zerosTotal = n - onesPrefix[n];
+
+					int best = IMAX
+					;
+					for (int k=p;k<=n;k++) {
+
+						int onesInPrefix = onesPrefix[k];
+						int zerosInSuffix = zerosTotal-(k-onesInPrefix);
+						int cost = onesInPrefix+zerosInSuffix;
+						if (cost<best) best=cost;
+
+					}
+					ans = best;
+
 				}
+
+			
+
 			}
 
 			ps(ans);
+
+			
 		}
 	}
+
 
 	static long MOD = 998244353L;
 	static int IMAX = Integer.MAX_VALUE;
@@ -124,4 +155,5 @@ public class Main{
 		while(j<=r)t[k++]=a[j++];
 		for(i=l;i<=r;i++)a[i]=t[i];
 	}
+
 }

@@ -10,36 +10,20 @@ public class Main{
 
 		while(t-->0){
 
-			int n = scn.nextInt();
+			int part = scn.nextInt();
 
-			HashSet<Long> hs = new HashSet<>();
+			int a = scn.nextInt();
 
-			for(int i=0;i<n;i++){
-				int x = scn.nextInt();
-				hs.add((long)x-(i+1));
-			}
+			int b = scn.nextInt();
 
-			int ans = 0;
+			int c = scn.nextInt();
 
-			for(long x:hs){
+			a = Math.min(a,Math.min(b,c));
 
-				if(!hs.contains(x-1)){
-
-					int cur = 1;
-					long y = x;
-
-					while(hs.contains(y+1)){
-						y++;
-						cur++;
-					}
-
-					ans = Math.max(ans,cur);
-				}
-			}
-
-			ps(ans);
+			ps(part-a);
 		}
 	}
+
 
 	static long MOD = 998244353L;
 	static int IMAX = Integer.MAX_VALUE;
@@ -124,4 +108,5 @@ public class Main{
 		while(j<=r)t[k++]=a[j++];
 		for(i=l;i<=r;i++)a[i]=t[i];
 	}
+
 }
