@@ -9,35 +9,30 @@ public class Main{
 		int t = scn.nextInt();
 
 		while(t-->0){
-
+			
 			int n = scn.nextInt();
 
-			HashSet<Long> hs = new HashSet<>();
-
-			for(int i=0;i<n;i++){
-				int x = scn.nextInt();
-				hs.add((long)x-(i+1));
+			if(n == 0){
+				ps(1);
+				ps(0);
+				continue;
 			}
 
-			int ans = 0;
+			long powTwo = 1L;
 
-			for(long x:hs){
+			while(powTwo <= n) powTwo *= 2;
 
-				if(!hs.contains(x-1)){
+			ps(2*powTwo-1);
 
-					int cur = 1;
-					long y = x;
+			StringBuilder str = new StringBuilder();
 
-					while(hs.contains(y+1)){
-						y++;
-						cur++;
-					}
+			for(int i=1;i<powTwo;i++) str.append((i&-i)+" ");
 
-					ans = Math.max(ans,cur);
-				}
-			}
+			str.append((powTwo/2)+" ");
 
-			ps(ans);
+	 		for(int i=1;i<powTwo;i++) str.append((i&-i)+" ");
+
+			ps(str);
 		}
 	}
 
