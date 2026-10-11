@@ -10,21 +10,39 @@ public class Main{
 
 		while(t-->0){
 			
-			int x = scn.nextInt();
+			int n = scn.nextInt();
 
-			int y = scn.nextInt();
+			int count = 1;
 
-			if(Math.abs(y)>x+1){
-				ps(-1);
-				continue;
+			int siz = (n/2)-1;
+
+			ArrayList<Integer> arr = new ArrayList<>();
+
+			while(n>0){
+
+				if(n==3){
+
+					for(int i=0;i<2;i++) arr.add(count);
+
+					count++;
+
+					arr.add(count);
+
+					break;
+				}
+
+				for(int i=0;i<(n/2)-1;i++){
+					arr.add(count);
+				}
+
+				count++;
+				n -= (n/2)-1;
+
 			}
 
-			if((x-y)%2==0){
-				ps(x);
-			}
-			else{
-				ps(x+1);
-			}
+			for(int i : arr) pns(i+" ");
+
+			ps("");
 
 		}
 	}
